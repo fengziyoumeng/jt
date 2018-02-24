@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rongdu.cashloan.cl.mapper.CompanyProdDetailMapper">
+  <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.CompanyProdDetail">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="proc_id" jdbcType="BIGINT" property="proc_id" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="cp_type" jdbcType="INTEGER" property="cp_type" />
+    <result column="org_id" jdbcType="BIGINT" property="org_id" />
+    <result column="proc_name" jdbcType="VARCHAR" property="proc_name" />
+    <result column="logo_path" jdbcType="VARCHAR" property="logo_path" />
+    <result column="official_url" jdbcType="VARCHAR" property="official_url" />
+    <result column="proc_flag" jdbcType="INTEGER" property="proc_flag" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="audit_person" jdbcType="VARCHAR" property="audit_person" />
+    <result column="audit_state" jdbcType="INTEGER" property="audit_state" />
+    <result column="audit_message" jdbcType="VARCHAR" property="audit_message" />
+    <result column="audit_time" jdbcType="TIMESTAMP" property="audit_time" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="create_time"  />
+    <result column="update_time" jdbcType="TIMESTAMP" property="update_time" />
+    <result column="show_click_num" jdbcType="BIGINT" property="show_click_num" />
+    <result column="flag_msg" jdbcType="VARCHAR" property="flag_msg" />
+    <result column="p_message" jdbcType="VARCHAR" property="p_message" />
+  </resultMap>
+
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.rongdu.cashloan.cl.domain.CompanyProdDetail">
+    <result column="proc_info" jdbcType="LONGVARCHAR" property="proc_info" />
+  </resultMap>
+
+  <resultMap extends="BaseResultMap" id="ResultMapWithType" type="com.rongdu.cashloan.cl.domain.CompanyProdDetail">
+    <result column="update_time" jdbcType="TIMESTAMP" property="update_time" />
+    <result column="proc_info" jdbcType="LONGVARCHAR" property="proc_info" />
+    <association property="companyProd" javaType="com.rongdu.cashloan.cl.domain.CompanyProd" columnPrefix="bcp_">
+      <id column="id" jdbcType="BIGINT" property="id" />
+      <result column="big_type"  property="big_type" />
+      <result column="type"  property="type" />
+      <result column="type_name"  property="type_name" />
+      <result column="type_img_path"  property="type_img_path" />
+      <result column="sort"  property="sort" />
+    </association>
+    <association property="companyInfo" javaType="com.rongdu.cashloan.cl.domain.CompanyInformation" columnPrefix="bci_">
+      <id column="id" jdbcType="BIGINT" property="id" />
+      <result column="company_name"  property="companyName" />
+      <result column="company_address"  property="companyAddress" />
+      <result column="registered_capital"  property="registeredCapital" />
+      <result column="introduction"  property="introduction" />
+    </association>
+    <collection property="OperativeInfoList" ofType="com.rongdu.cashloan.cl.domain.OperativeInfo" columnPrefix="boi_">
+      <result column="id" property="id"></result>
+      <result column="proc_id"  property="proc_id" />
+      <result column="name"  property="name" />
+      <result column="tel"  property="tel" />
+      <result column="wx"  property="wx" />
+      <result column="qq"  property="qq" />
+      <result column="job"  property="job" />
+      <result column="module"  property="module" />
+    </collection>
+  </resultMap>
+
+  <resultMap extends="BaseResultMap" id="AuditStateMap" type="com.rongdu.cashloan.cl.domain.CompanyProdDetail">
+    <result column="update_time" jdbcType="TIMESTAMP" property="update_time" />
+    <result column="proc_info" jdbcType="LONGVARCHAR" property="proc_info" />
+    <association property="companyInfo" javaType="com.rongdu.cashloan.cl.domain.CompanyInformation" columnPrefix="bci_">
+      <id column="id" jdbcType="BIGINT" property="id" />
+      <result column="company_name"  property="companyName" />
+      <result column="registered_capital"  property="registeredCapital" />
+    </association>
+  </resultMap>
+
+  <resultMap extends="BaseResultMap" id="ResultMapByType" type="com.rongdu.cashloan.cl.domain.CompanyProdDetail">
+    <result column="update_time" jdbcType="TIMESTAMP" property="update_time" />
+    <result column="proc_info" jdbcType="LONGVARCHAR" property="proc_info" />
+    <association property="sysDictDetail" javaType="com.rongdu.cashloan.system.domain.SysDictDetail" columnPrefix="asdd_">
+      <result column="item_value"  property="itemValue" />
+    </association>
+    <association property="companyInfo" javaType="com.rongdu.cashloan.cl.domain.CompanyInformation" columnPrefix="bci_">
+      <id column="id" jdbcType="BIGINT" property="id" />
+      <result column="company_name"  property="companyName" />
+      <result column="company_address"  property="companyAddress" />
+      <result column="introduction"  property="introduction" />
+    </association>
+    <collection property="OperativeInfoList" ofType="com.rongdu.cashloan.cl.domain.OperativeInfo" columnPrefix="boi_">
+      <result column="id" property="id"></result>
+      <result column="proc_id"  property="proc_id" />
+      <result column="name"  property="name" />
+      <result column="tel"  property="tel" />
+      <result column="wx"  property="wx" />
+      <result column="qq"  property="qq" />
+      <result column="job"  property="job" />
+      <result column="module"  property="module" />
+    </collection>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, proc_id,type, cp_type, org_id, proc_name, logo_path, official_url, proc_flag, status,
+    sort, audit_person, audit_state, audit_message,audit_time,create_time,update_time,show_click_num,flag_msg,p_message
+  </sql>
+  <sql id="Blob_Column_List">
+    proc_info
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from b_company_prod_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from b_company_prod_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.rongdu.cashloan.cl.domain.CompanyProdDetail">
+    insert into b_company_prod_detail (id, proc_id,type, cp_type,
+      org_id, proc_name, logo_path, 
+      official_url, proc_flag, status, 
+      sort, audit_person, audit_state, 
+      audit_message, audit_time, create_time, update_time,show_click_num,flag_msg,
+      proc_info)
+    values (#{id,jdbcType=BIGINT},#{proc_id,jdbcType=BIGINT},#{type,jdbcType=INTEGER}, #{cp_type,jdbcType=INTEGER},
+      #{org_id,jdbcType=BIGINT}, #{proc_name,jdbcType=VARCHAR}, #{logo_path,jdbcType=VARCHAR}, 
+      #{official_url,jdbcType=VARCHAR}, #{proc_flag,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{sort,jdbcType=INTEGER}, #{audit_person,jdbcType=VARCHAR}, #{audit_state,jdbcType=INTEGER}, 
+      #{audit_message,jdbcType=VARCHAR},#{audit_time,jdbcType=TIMESTAMP},#{create_time,jdbcType=TIMESTAMP},
+      #{update_time,jdbcType=TIMESTAMP},#{show_click_num,jdbcType=BIGINT},#{flag_msg,jdbcType=VARCHAR},
+      #{proc_info,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rongdu.cashloan.cl.domain.CompanyProdDetail">
+    insert into b_company_prod_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="proc_id != null">
+        proc_id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="cp_type != null">
+        cp_type,
+      </if>
+      <if test="org_id != null">
+        org_id,
+      </if>
+      <if test="proc_name != null">
+        proc_name,
+      </if>
+      <if test="logo_path != null">
+        logo_path,
+      </if>
+      <if test="official_url != null">
+        official_url,
+      </if>
+      <if test="proc_flag != null">
+        proc_flag,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="audit_person != null">
+        audit_person,
+      </if>
+      <if test="audit_state != null">
+        audit_state,
+      </if>
+      <if test="audit_message != null">
+        audit_message,
+      </if>
+      <if test="audit_time != null">
+        audit_time,
+      </if>
+      <if test="create_time != null">
+        create_time,
+      </if>
+      <if test="update_time != null">
+        update_time,
+      </if>
+      <if test="show_click_num != null">
+        show_click_num,
+      </if>
+      <if test="flag_msg != null">
+        flag_msg,
+      </if>
+      <if test="proc_info != null">
+        proc_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="proc_id != null">
+        #{proc_id,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="cp_type != null">
+        #{cp_type,jdbcType=INTEGER},
+      </if>
+      <if test="org_id != null">
+        #{org_id,jdbcType=BIGINT},
+      </if>
+      <if test="proc_name != null">
+        #{proc_name,jdbcType=VARCHAR},
+      </if>
+      <if test="logo_path != null">
+        #{logo_path,jdbcType=VARCHAR},
+      </if>
+      <if test="official_url != null">
+        #{official_url,jdbcType=VARCHAR},
+      </if>
+      <if test="proc_flag != null">
+        #{proc_flag,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="audit_person != null">
+        #{audit_person,jdbcType=VARCHAR},
+      </if>
+      <if test="audit_state != null">
+        #{audit_state,jdbcType=INTEGER},
+      </if>
+      <if test="audit_message != null">
+        #{audit_message,jdbcType=VARCHAR},
+      </if>
+      <if test="audit_time != null">
+        #{audit_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="create_time != null">
+        #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="update_time != null">
+        #{update_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="show_click_num != null">
+        #{show_click_num,jdbcType=BIGINT},
+      </if>
+      <if test="flag_msg != null">
+        #{flag_msg,jdbcType=VARCHAR},
+      </if>
+      <if test="proc_info != null">
+        #{proc_info,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rongdu.cashloan.cl.domain.CompanyProdDetail">
+    update b_company_prod_detail
+    <set>
+      <if test="proc_id != null">
+        proc_id = #{proc_id,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="cp_type != null">
+        cp_type = #{cp_type,jdbcType=INTEGER},
+      </if>
+      <if test="org_id != null">
+        org_id = #{org_id,jdbcType=BIGINT},
+      </if>
+      <if test="proc_name != null">
+        proc_name = #{proc_name,jdbcType=VARCHAR},
+      </if>
+      <if test="logo_path != null">
+        logo_path = #{logo_path,jdbcType=VARCHAR},
+      </if>
+      <if test="official_url != null">
+        official_url = #{official_url,jdbcType=VARCHAR},
+      </if>
+      <if test="proc_flag != null">
+        proc_flag = #{proc_flag,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="audit_person != null">
+        audit_person = #{audit_person,jdbcType=VARCHAR},
+      </if>
+      <if test="audit_state != null">
+        audit_state = #{audit_state,jdbcType=INTEGER},
+      </if>
+      <if test="audit_message != null">
+        audit_message = #{audit_message,jdbcType=VARCHAR},
+      </if>
+      <if test="audit_time != null">
+        audit_time = #{audit_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="create_time != null">
+        create_time = #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="update_time != null">
+        update_time = #{update_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="show_click_num != null">
+        show_click_num = #{show_click_num,jdbcType=BIGINT},
+      </if>
+      <if test="flag_msg != null">
+        flag_msg = #{flag_msg,jdbcType=VARCHAR},
+      </if>
+      <if test="p_message != null">
+        p_message = #{p_message,jdbcType=VARCHAR},
+      </if>
+      <if test="proc_info != null">
+        proc_info = #{proc_info,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rongdu.cashloan.cl.domain.CompanyProdDetail">
+    update b_company_prod_detail
+    set proc_id = #{proc_id,jdbcType=BIGINT},
+      type = #{type,jdbcType=INTEGER},
+      cp_type = #{cp_type,jdbcType=INTEGER},
+      org_id = #{org_id,jdbcType=BIGINT},
+      proc_name = #{proc_name,jdbcType=VARCHAR},
+      logo_path = #{logo_path,jdbcType=VARCHAR},
+      official_url = #{official_url,jdbcType=VARCHAR},
+      proc_flag = #{proc_flag,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      audit_person = #{audit_person,jdbcType=VARCHAR},
+      audit_state = #{audit_state,jdbcType=INTEGER},
+      audit_message = #{audit_message,jdbcType=VARCHAR},
+      audit_time = #{audit_time,jdbcType=TIMESTAMP},
+      create_time = #{create_time,jdbcType=TIMESTAMP},
+      update_time = #{update_time,jdbcType=TIMESTAMP},
+      show_click_num = #{show_click_num,jdbcType=BIGINT},
+      flag_msg = #{flag_msg,jdbcType=VARCHAR},
+      proc_info = #{proc_info,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rongdu.cashloan.cl.domain.CompanyProdDetail">
+    update b_company_prod_detail
+    set proc_id = #{proc_id,jdbcType=BIGINT},
+      type = #{type,jdbcType=INTEGER},
+      cp_type = #{cp_type,jdbcType=INTEGER},
+      org_id = #{org_id,jdbcType=BIGINT},
+      proc_name = #{proc_name,jdbcType=VARCHAR},
+      logo_path = #{logo_path,jdbcType=VARCHAR},
+      official_url = #{official_url,jdbcType=VARCHAR},
+      proc_flag = #{proc_flag,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      audit_person = #{audit_person,jdbcType=VARCHAR},
+      audit_state = #{audit_state,jdbcType=INTEGER},
+      audit_message = #{audit_message,jdbcType=VARCHAR},
+      audit_time = #{audit_time,jdbcType=TIMESTAMP},
+      create_time = #{create_time,jdbcType=TIMESTAMP},
+      update_time = #{update_time,jdbcType=TIMESTAMP},
+      show_click_num = #{show_click_num,jdbcType=BIGINT},
+      flag_msg = #{flag_msg,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="serviceAudit" parameterType="com.rongdu.cashloan.cl.domain.CompanyProdDetail">
+    update b_company_prod_detail
+    set
+      audit_time = #{audit_time,jdbcType=TIMESTAMP},
+      audit_person = #{audit_person,jdbcType=VARCHAR},
+      audit_state = #{audit_state,jdbcType=INTEGER},
+      audit_message = #{audit_message,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="listCompanyprodDetail" parameterType="com.rongdu.cashloan.cl.domain.CompanyProdDetail" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from b_company_prod_detail
+    <where>
+      <if test="id != null">
+        id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="proc_id != null">
+        and proc_id = #{proc_id,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        and type = #{type,jdbcType=INTEGER}
+      </if>
+      <if test="cp_type != null">
+        and cp_type = #{cp_type,jdbcType=INTEGER}
+      </if>
+      <if test="org_id != null">
+        and org_id = #{org_id,jdbcType=BIGINT}
+      </if>
+      <if test="proc_name != null">
+        and proc_name = #{proc_name,jdbcType=VARCHAR}
+      </if>
+      <if test="logo_path != null">
+        and logo_path = #{logo_path,jdbcType=VARCHAR}
+      </if>
+      <if test="official_url != null">
+        and official_url = #{official_url,jdbcType=VARCHAR}
+      </if>
+      <if test="proc_flag != null">
+        and proc_flag = #{proc_flag,jdbcType=INTEGER}
+      </if>
+      <if test="status != null">
+        and status = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="sort != null">
+        and sort = #{sort,jdbcType=INTEGER}
+      </if>
+      <if test="audit_person != null">
+        and audit_person = #{audit_person,jdbcType=VARCHAR}
+      </if>
+      <if test="audit_state != null">
+        and audit_state = #{audit_state,jdbcType=INTEGER}
+      </if>
+      <if test="audit_message != null">
+        and audit_message = #{audit_message,jdbcType=VARCHAR}
+      </if>
+      <if test="audit_time != null">
+        and audit_time = #{audit_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="create_time != null">
+        and create_time = #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="update_time != null">
+        and update_time = #{update_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="show_click_num != null">
+        and show_click_num = #{show_click_num,jdbcType=BIGINT},
+      </if>
+      <if test="flag_msg != null">
+        and flag_msg = #{flag_msg,jdbcType=VARCHAR},
+      </if>
+      <if test="proc_info != null">
+        and proc_info = #{proc_info,jdbcType=LONGVARCHAR}
+      </if>
+    </where>
+    order by sort
+  </select>
+
+  <select id="getAuditList" resultMap="ResultMapWithType">
+    select
+      bcpd.id, bcpd.proc_id,bcpd.type, bcpd.cp_type, bcpd.org_id, bcpd.proc_name,
+      bcpd.logo_path, bcpd.official_url, bcpd.proc_flag, bcpd.status,bcpd.proc_info,
+      bcpd.sort, bcpd.audit_person, bcpd.audit_state, bcpd.audit_message,bcpd.update_time,
+      boi.id as boi_id,boi.proc_id as boi_proc_id,boi.name as boi_name,boi.tel as boi_tel,
+      boi.wx as boi_wx,boi.qq as boi_qq,boi.job as boi_job,boi.module as boi_module,
+      bcp.id as bcp_id,bcp.big_type as bcp_big_type,bcp.type as bcp_type,bcp.type_name AS bcp_type_name,
+      bcp.type_img_path as bcp_type_img_path,bcp.sort as bcp_sort,
+      bci.id AS bci_id,bci.company_name AS bci_company_name
+    FROM b_company_prod_detail bcpd
+    LEFT JOIN b_operative_info boi ON bcpd.proc_id = boi.proc_id
+    LEFT JOIN b_company_prod bcp ON bcp.type = bcpd.cp_type
+    LEFT JOIN b_company_information bci ON bci.id = bcpd.org_id
+    WHERE bcpd.audit_state = 1
+    ORDER BY update_time ASC
+  </select>
+
+  <sql id="baseAllResult">
+      bcpd.id, bcpd.proc_id,bcpd.type, bcpd.cp_type, bcpd.org_id, bcpd.proc_name,
+      bcpd.logo_path, bcpd.official_url, bcpd.proc_flag, bcpd.status,bcpd.proc_info,
+      bcpd.sort, bcpd.audit_person, bcpd.audit_state, bcpd.audit_message,bcpd.update_time,
+      bcpd.create_time,bcpd.flag_msg,p_message,
+      boi.id as boi_id,boi.proc_id as boi_proc_id,boi.name as boi_name,boi.tel as boi_tel,
+      boi.wx as boi_wx,boi.qq as boi_qq,boi.job as boi_job,boi.module as boi_module,
+      bcp.id as bcp_id,bcp.big_type as bcp_big_type,bcp.type as bcp_type,bcp.type_name AS bcp_type_name,
+      bcp.type_img_path as bcp_type_img_path,bcp.sort as bcp_sort,
+      bci.id AS bci_id,bci.company_name AS bci_company_name,
+      bci.company_address AS  bci_company_address,bci.registered_capital AS bci_registered_capital,
+      bci.introduction AS  bci_introduction
+  </sql>
+
+  <sql id="baseTypeResult">
+      bcpd.id, bcpd.proc_id,bcpd.type, bcpd.cp_type, bcpd.org_id, bcpd.proc_name,
+      bcpd.logo_path, bcpd.official_url, bcpd.proc_flag, bcpd.status,bcpd.proc_info,
+      bcpd.sort, bcpd.audit_person, bcpd.audit_state, bcpd.audit_message,bcpd.update_time,
+      bcpd.create_time,bcpd.flag_msg,p_message,
+      boi.id as boi_id,boi.proc_id as boi_proc_id,boi.name as boi_name,boi.tel as boi_tel,
+      boi.wx as boi_wx,boi.qq as boi_qq,boi.job as boi_job,boi.module as boi_module,
+      asdd.item_value as asdd_item_value,
+      bci.id AS bci_id,bci.company_name AS bci_company_name,
+      bci.company_address AS bci_company_address,bci.introduction AS bci_introduction
+  </sql>
+
+  <sql id="productResult">
+      bcpd.id, bcpd.proc_id,bcpd.type, bcpd.cp_type, bcpd.org_id, bcpd.proc_name,
+      bcpd.logo_path, bcpd.official_url, bcpd.proc_flag, bcpd.status,bcpd.proc_info,
+      bcpd.sort, bcpd.audit_person, bcpd.audit_state, bcpd.audit_message,bcpd.update_time,
+      bcpd.create_time,
+      bci.id AS bci_id,bci.company_name AS bci_company_name,bci.registered_capital AS bci_registered_capital
+  </sql>
+  <select id="getAllListBySearch" resultMap="ResultMapWithType">
+    select
+      <include refid="baseAllResult"/>
+    FROM b_company_prod_detail bcpd
+    LEFT JOIN b_operative_info boi ON bcpd.proc_id = boi.proc_id
+    LEFT JOIN b_company_prod bcp ON bcp.type = bcpd.cp_type
+    LEFT JOIN b_company_information bci ON bci.id = bcpd.org_id
+    <where>
+      bcpd.audit_state = 2
+      <if test="companyName != null and companyName !=''">
+        and bci.company_name LIKE concat('%',#{companyName,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="serviceName != null and serviceName !=''">
+        and bcpd.proc_name LIKE concat('%',#{serviceName,jdbcType=VARCHAR},'%')
+      </if>
+    </where>
+    ORDER BY update_time ASC
+  </select>
+
+  <select id="getAuditStateList" resultMap="ResultMapWithType">
+    select
+    <include refid="baseAllResult"/>
+    FROM b_company_prod_detail bcpd
+    LEFT JOIN b_operative_info boi ON bcpd.proc_id = boi.proc_id
+    LEFT JOIN b_company_prod bcp ON bcp.type = bcpd.cp_type
+    LEFT JOIN b_company_information bci ON bci.id = bcpd.org_id
+    WHERE bci.user_id =#{userId} AND bcpd.audit_state = #{auditState}
+    ORDER BY bcpd.update_time DESC
+  </select>
+
+  <!--<select id="getProdDetailById" resultMap="ResultMapWithType">
+    select
+    <include refid="baseAllResult"/>
+    FROM b_company_prod_detail bcpd
+    LEFT JOIN b_operative_info boi ON bcpd.proc_id = boi.proc_id
+    LEFT JOIN b_company_prod bcp ON bcp.type = bcpd.cp_type
+    LEFT JOIN b_company_information bci ON bci.id = bcpd.org_id
+    WHERE bcpd.proc_id = #{procId}
+  </select>-->
+
+  <select id="getProdDetailById" resultMap="ResultMapByType">
+    select
+    <include refid="baseTypeResult"/>
+    FROM b_company_prod_detail bcpd
+    LEFT JOIN b_operative_info boi ON bcpd.proc_id = boi.proc_id
+    LEFT JOIN arc_sys_dict_detail asdd ON asdd.item_code = bcpd.type
+    LEFT JOIN arc_sys_dict asd on asd.id = asdd.parent_id
+    LEFT JOIN b_company_information bci ON bci.id = bcpd.org_id
+    WHERE bcpd.proc_id = #{procId} AND asd.type_code='COM_PROD_SON_TYPE'
+  </select>
+
+  <select id="getUserIdByProcId" resultType="map">
+    select
+    bci.user_id as userId,bcpd.proc_id AS procId
+    FROM b_company_prod_detail bcpd
+    LEFT JOIN b_company_information bci ON bci.id = bcpd.org_id
+    WHERE bcpd.id = #{procId}
+  </select>
+
+</mapper>
