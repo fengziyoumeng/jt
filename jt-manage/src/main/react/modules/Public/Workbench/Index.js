@@ -48,9 +48,6 @@ export default React.createClass({
     render() {
         var { data } = this.state;
         var userMessage = this.state.userMessage;
-        if(true){
-            alert("账户余额不足请及时充值！");
-        }
         return (
             <div style={{display: userMessage.name&&userMessage.name!='代理商' ? 'block' : 'none' }}>
                 <div className="block-panel">

@@ -44,7 +44,8 @@ var CompanyServiceManage = require('../../CompanyManage/CompanyServiceManage/ind
 var CompanyServiceEditManage = require('../../CompanyManage/CompanyServiceEditManage/index'); //公司服务修改
 var MessageManage = require('../../PlatFormManage/MessageManage/index'); //消息管理
 
-
+var WithholdCheck = require('../../Account/WithholdCheck/index');//扣款账单
+var AccountDetail = require('../../Account/AccountDetail/index');//账户明细
 
 
 
@@ -91,6 +92,7 @@ module.exports = {
   AdInfoManage,
   CompanyServiceManage,
   CompanyServiceEditManage,
-  MessageManage
-
+  MessageManage,
+  WithholdCheck,
+  AccountDetail
 }
