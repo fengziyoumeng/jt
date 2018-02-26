@@ -52,7 +52,7 @@ public class MybatisGenerate {
 		Boolean needsDomain = true; // 是否生成实体类
 		Boolean needsDao = true; // 是否生成Dao
 		Boolean needsService = true; // 是否生成Service和ServiceImpl
-		Boolean needsAction = false; // 是否生成Action
+		Boolean needsAction = true; // 是否生成Action
 		Boolean needsMapper = true; //是否生成Mapper配置文件
 		String dbClass = null;
 		String showTables = null;

@@ -37,7 +37,7 @@ var NavTab = React.createClass({
                 {
                   this.state.tablist.map((t, i)=> {
                     return i == 0 ?
-                      <TabPane key="workbench" tab="工作台"> <Workbench  /></TabPane>
+                        <TabPane key="workbench" tab="工作台"> <div>hello</div>{/*<Workbench  />*/}</TabPane>
                       : <TabPane key={t.tabId}
                                  tab={<div>{t.tabName} <i className="anticon anticon-cross-circle"  onClick={this.remove.bind(this,t.tabId)}></i></div>}>
                         {t.tabContent} 

@@ -44,6 +44,9 @@ var CompanyServiceManage = require('../../CompanyManage/CompanyServiceManage/ind
 var CompanyServiceEditManage = require('../../CompanyManage/CompanyServiceEditManage/index'); //公司服务修改
 var MessageManage = require('../../PlatFormManage/MessageManage/index'); //消息管理
 
+/*数据管理*/
+var UserMsgListManage = require('../../DataManage/UserMsgListManage/index'); //用户数据列表
+var UserTypeManage = require('../../DataManage/UserTypeManage/index'); //设置用户类型
 
 
 
@@ -91,6 +94,8 @@ module.exports = {
   AdInfoManage,
   CompanyServiceManage,
   CompanyServiceEditManage,
-  MessageManage
+  MessageManage,
+  UserMsgListManage,
+  UserTypeManage
 
 }
