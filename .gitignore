@@ -19,3 +19,4 @@ sms.properties
 redis.properties
 config/redis.properties
 config/vsftpd.properties
+generatorConfig.xml

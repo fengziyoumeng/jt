@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rongdu.cashloan.cl.mapper.AccountDetailInfoMapper">
+  <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.AccountDetailInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="user_id" />
+    <result column="amt_type" jdbcType="INTEGER" property="amt_type" />
+    <result column="amt" jdbcType="DECIMAL" property="amt" />
+    <result column="pay_type" jdbcType="INTEGER" property="pay_type" />
+    <result column="pay_account" jdbcType="VARCHAR" property="pay_account" />
+    <result column="hand_person" jdbcType="VARCHAR" property="hand_person" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="update_time" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, amt_type, amt, pay_type, pay_account, hand_person, remark, create_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sj_account_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sj_account_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.rongdu.cashloan.cl.domain.AccountDetailInfo">
+    insert into sj_account_detail (id, user_id, amt_type, 
+      amt, pay_type, pay_account, 
+      hand_person, remark, create_time, 
+      update_time)
+    values (#{id,jdbcType=BIGINT}, #{user_id,jdbcType=BIGINT}, #{amt_type,jdbcType=INTEGER}, 
+      #{amt,jdbcType=DECIMAL}, #{pay_type,jdbcType=INTEGER}, #{pay_account,jdbcType=VARCHAR}, 
+      #{hand_person,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{create_time,jdbcType=TIMESTAMP}, 
+      #{update_time,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rongdu.cashloan.cl.domain.AccountDetailInfo">
+    insert into sj_account_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="user_id != null">
+        user_id,
+      </if>
+      <if test="amt_type != null">
+        amt_type,
+      </if>
+      <if test="amt != null">
+        amt,
+      </if>
+      <if test="pay_type != null">
+        pay_type,
+      </if>
+      <if test="pay_account != null">
+        pay_account,
+      </if>
+      <if test="hand_person != null">
+        hand_person,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="create_time != null">
+        create_time,
+      </if>
+      <if test="update_time != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="user_id != null">
+        #{user_id,jdbcType=BIGINT},
+      </if>
+      <if test="amt_type != null">
+        #{amt_type,jdbcType=INTEGER},
+      </if>
+      <if test="amt != null">
+        #{amt,jdbcType=DECIMAL},
+      </if>
+      <if test="pay_type != null">
+        #{pay_type,jdbcType=INTEGER},
+      </if>
+      <if test="pay_account != null">
+        #{pay_account,jdbcType=VARCHAR},
+      </if>
+      <if test="hand_person != null">
+        #{hand_person,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null">
+        #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="update_time != null">
+        #{update_time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rongdu.cashloan.cl.domain.AccountDetailInfo">
+    update sj_account_detail
+    <set>
+      <if test="user_id != null">
+        user_id = #{user_id,jdbcType=BIGINT},
+      </if>
+      <if test="amt_type != null">
+        amt_type = #{amt_type,jdbcType=INTEGER},
+      </if>
+      <if test="amt != null">
+        amt = #{amt,jdbcType=DECIMAL},
+      </if>
+      <if test="pay_type != null">
+        pay_type = #{pay_type,jdbcType=INTEGER},
+      </if>
+      <if test="pay_account != null">
+        pay_account = #{pay_account,jdbcType=VARCHAR},
+      </if>
+      <if test="hand_person != null">
+        hand_person = #{hand_person,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null">
+        create_time = #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="update_time != null">
+        update_time = #{update_time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rongdu.cashloan.cl.domain.AccountDetailInfo">
+    update sj_account_detail
+    set user_id = #{user_id,jdbcType=BIGINT},
+      amt_type = #{amt_type,jdbcType=INTEGER},
+      amt = #{amt,jdbcType=DECIMAL},
+      pay_type = #{pay_type,jdbcType=INTEGER},
+      pay_account = #{pay_account,jdbcType=VARCHAR},
+      hand_person = #{hand_person,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_time = #{create_time,jdbcType=TIMESTAMP},
+      update_time = #{update_time,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="listAccountDetailInfos" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sj_account_detail
+    where
+    user_id = #{userId,jdbcType=BIGINT}
+    and amt_type = #{amtType,jdbcType=INTEGER}
+    <if test="sDate != null">
+      and date_format(create_time, '%Y-%m-%d') &gt;= #{sDate}
+    </if>
+    <if test="eDate != null">
+      and date_format(create_time, '%Y-%m-%d') &lt;= #{eDate}
+    </if>
+    where
+  </select>
+
+</mapper>

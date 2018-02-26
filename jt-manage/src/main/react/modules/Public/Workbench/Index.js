@@ -49,30 +49,17 @@ export default React.createClass({
         var { data } = this.state;
         var userMessage = this.state.userMessage;
         return (
-            <div style={{ minWidth: 1350,display: userMessage.name&&userMessage.name!='代理商' ? 'block' : 'none' }}>
+            <div style={{display: userMessage.name&&userMessage.name!='代理商' ? 'block' : 'none' }}>
                 <div className="block-panel">
-                    <h2 className="navLine-title">注册数据</h2>
+                    <h2 className="navLine-title">信息预览</h2>
                     <div className='blk-top'>
                         <div className='blk-top-item'>
-                            <div className='blk-title'>当天注册数</div>
-                            <div className='blk-number'>{data.todayRegister}</div>
+                            <div className='blk-title'>余额</div>
+                            <div className='blk-number'><a href="http://www.baidu.com">0.00</a></div>
                         </div>
                         <div className='blk-top-item'>
-                            <div className='blk-title'>当月注册数</div>
-                            <div className='blk-number'>{data.monthRegister}</div>
-                        </div>
-                        <div className='blk-top-item'>
-                            <div className='blk-title'>总注册数</div>
-                            <div className='blk-number'>{data.totalRegister}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="block-chart">
-                    <div className='blk-top'>
-                        <div className='blk-top-item blk-top-item-last'>
-                            <Bar1 data={data} />
-                            <Bar2 data={data} />
+                            <div className='blk-title'>用户数（单位：个）</div>
+                            <div className='blk-number'><a href="http://www.baidu.com">2001</a></div>
                         </div>
                     </div>
                 </div>
