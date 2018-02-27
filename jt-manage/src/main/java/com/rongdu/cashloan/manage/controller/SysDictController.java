@@ -393,4 +393,22 @@ public class SysDictController extends BaseController {
 		result.put(Constant.RESPONSE_DATA, list);
 		ServletUtils.writeToResponse(response, result);
 	}
+
+	/**
+	 *  获取字典值集合
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/act/flowControl/getMutilCheckBox.htm")
+	public void list(HttpServletRequest request, HttpServletResponse response,String typeCode) throws Exception{
+		Map<String, Object> res = new HashMap<String, Object>();
+		Map<String, Object> param = new HashMap<>();
+		param.put("typeCode", typeCode);  //如：FLOWINFO_P_TAG
+		List<SysDictDetail> sysDictDetailList =  sysDictDetailService.listByTypeCode(param);
+		res.put(Constant.RESPONSE_DATA, sysDictDetailList);
+		res.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		res.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+		ServletUtils.writeToResponse(response, res);
+	}
 }

@@ -98,8 +98,7 @@ module.exports = {
   CompanyServiceEditManage,
   MessageManage,
   UserMsgListManage,
-  UserTypeManage
-
+  UserTypeManage,
   MessageManage,
   WithholdCheck,
   AccountDetail

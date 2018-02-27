@@ -106,7 +106,7 @@ export default Reflux.createStore({
 					'CompanyServiceEditManage',
 					'MessageManage',
 					'UserMsgListManage',
-					'UserTypeManage'
+					'UserTypeManage',
 					'MessageManage',
 					'WithholdCheck',
 					'AccountDetail'

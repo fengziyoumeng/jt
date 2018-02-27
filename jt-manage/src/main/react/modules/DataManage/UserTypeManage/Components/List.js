@@ -73,21 +73,28 @@ var List = React.createClass({
             var data = objectAssign({}, {
                 form: JSON.stringify(objectAssign({}, values, {}))
             });
-
-            Utils.ajaxData({
-                url: "/act/saveorupdate/querycondition.htm",
-                data: data,
-                callback: (result) => {
-                    if (result.code == 200) {
-                        const modal = Modal.success({
-                            title: result.msg,
-                        });
-                    }else {
-                        Modal.error({
-                            title: result.msg,
-                        });
-                    }
-                }
+            var confirm = Modal.confirm;
+            confirm({
+                title: '确定提交吗？',
+                content: '请确认您的查询条件填写无误后点击确定！',
+                onOk() {
+                    Utils.ajaxData({
+                        url: "/act/saveorupdate/querycondition.htm",
+                        data: data,
+                        callback: (result) => {
+                            if (result.code == 200) {
+                                /*const modal = Modal.success({
+                                    title: "查询数据，逻辑待写",
+                                });*/
+                            }else {
+                                Modal.error({
+                                    title: result.msg,
+                                });
+                            }
+                        }
+                    });
+                },
+                onCancel() {},
             });
         })
     },
