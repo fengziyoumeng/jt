@@ -90,4 +90,11 @@
       update_time = #{update_time,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="getAccountInfo" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sj_account
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
 </mapper>

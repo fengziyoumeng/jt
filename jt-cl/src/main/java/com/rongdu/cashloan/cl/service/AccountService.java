@@ -24,5 +24,5 @@ public interface AccountService {
      * @return
      * @throws Exception
      */
-    AccountInfo getAccountInfo(Map<String, Object> params) throws Exception;
+    Map<String,Object> getAccInfo(Map<String, Object> params) throws Exception;
 }

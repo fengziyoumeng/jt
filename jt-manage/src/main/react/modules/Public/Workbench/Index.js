@@ -21,6 +21,7 @@ export default React.createClass({
             loading: false,
             data: [],
             userMessage: {},
+            record: "",
         }
     },
     fetch() {
@@ -28,14 +29,26 @@ export default React.createClass({
         this.setState({
             loading: true
         });
+
         Utils.ajaxData({
-            url: '/modules/manage/count/homeInfo.htm',
-            method: "get",
+            url: '/modules/manage/system/user/find.htm',
+            method: 'get',
             callback: (result) => {
-                console.log(result.data);
-                me.setState({
-                    loading: false,
-                    data: result.data,
+                console.log("----："+result.sysUser.id);
+                this.setState({
+                    record: result.sysUser.id
+                });
+                Utils.ajaxData({
+                    url: '/acc/account/balance.htm',
+                    method: "post",
+                    data:{userId:this.state.record},
+                    callback: (result) => {
+                        console.log(result.data);
+                        me.setState({
+                            loading: false,
+                            data: result.data,
+                        });
+                    }
                 });
             }
         });
@@ -49,13 +62,13 @@ export default React.createClass({
         var { data } = this.state;
         var userMessage = this.state.userMessage;
         return (
-            <div style={{display: userMessage.name&&userMessage.name!='代理商' ? 'block' : 'none' }}>
+            <div style={{display: 'block' }}>
                 <div className="block-panel">
                     <h2 className="navLine-title">信息预览</h2>
                     <div className='blk-top'>
                         <div className='blk-top-item'>
                             <div className='blk-title'>余额</div>
-                            <div className='blk-number'><a href="http://www.baidu.com">0.00</a></div>
+                            <div className='blk-number'><a href="http://www.baidu.com">{data.balance}</a></div>
                         </div>
                         <div className='blk-top-item'>
                             <div className='blk-title'>用户数（单位：个）</div>
