@@ -38,7 +38,6 @@ let SeachForm = React.createClass({
         endTime = dateString[1];
     },
     handleOut() {
-        debugger;
         window.open("/act/count/excel/flowUvInfo.htm?beginTime="+beginTime+"&endTime="+endTime);
     },
     render() {

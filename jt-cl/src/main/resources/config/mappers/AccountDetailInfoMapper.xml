@@ -155,8 +155,7 @@
     select
     <include refid="Base_Column_List" />
     from sj_account_detail
-    where
-    user_id = #{userId,jdbcType=BIGINT}
+    where user_id = #{userId,jdbcType=BIGINT}
     and amt_type = #{amtType,jdbcType=INTEGER}
     <if test="sDate != null">
       and date_format(create_time, '%Y-%m-%d') &gt;= #{sDate}
@@ -164,7 +163,6 @@
     <if test="eDate != null">
       and date_format(create_time, '%Y-%m-%d') &lt;= #{eDate}
     </if>
-    where
   </select>
 
 </mapper>

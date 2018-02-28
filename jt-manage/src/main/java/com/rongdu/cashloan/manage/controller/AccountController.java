@@ -37,15 +37,18 @@ public class AccountController extends BaseController {
      */
     @RequestMapping(value = "/acc/accountDetail/list.htm")
     public void  getAllAccountDetail(@RequestParam(value="searchParams",required=false) String searchParams,
-                             @RequestParam(value = "current") int current,
-                             @RequestParam(value = "pageSize") int pageSize ) throws Exception {
+                             @RequestParam(value = "current",required=false) int current,
+                             @RequestParam(value = "pageSize",required=false) int pageSize,
+                             @RequestParam(value = "userId",required=false) int userId ) throws Exception {
         Map<String, Object> params = JsonUtil.parse(searchParams, Map.class);
         if(params!=null){
-            params.put("userId",String.valueOf(params.get("userId")));
-            params.put("amtType",1);
-            params.put("sDate",String.valueOf(params.get("sDate")));
-            params.put("eDate",String.valueOf(params.get("eDate")));
+            params.put("sDate",String.valueOf(params.get("beginTime")));
+            params.put("eDate",String.valueOf(params.get("endTime")));
+        }else{
+            params = new HashMap<String,Object>();
         }
+        params.put("userId",userId);
+        params.put("amtType",1);
         Page<AccountDetailInfo> page = accountService.getAllAccountDetailInfo(params,current,pageSize);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put(Constant.RESPONSE_DATA, page);

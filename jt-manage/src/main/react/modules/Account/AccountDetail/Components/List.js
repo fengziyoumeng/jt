@@ -1,7 +1,7 @@
 import React from 'react'
 import { Table, Modal, Icon, Button } from 'antd';
-import Lookdetails from "./Lookdetails";
 const objectAssign = require('object-assign');
+var sysusername;
 export default React.createClass({
     getInitialState() {
         return {
@@ -30,86 +30,58 @@ export default React.createClass({
         this.fetch(nextProps.params);
     },
 
+    queryUserMessage() {
+        Utils.ajaxData({
+            url: '/modules/manage/system/user/find.htm',
+            method: 'get',
+            async:false,
+            callback: (result) => {
+                sysuser = result;
+            }
+        });
+    },
+
     componentDidMount() {
         this.fetch();
         []
     },
 
-    fetch(params = {}) {
-
-        this.setState({
-            loading: true
-        });
-        if (!params.pageSize) {
-            var params = {};
-            params = {
-                pageSize: 10,
-                current: 1
-            }
-        }
+    fetch(params = {pageSize: 10,
+        current: 1}) {
         Utils.ajaxData({
-            url: '/acc/accountDetail/list.htm',
-            method: "post",
-            data: params,
-            callback: (result) => {
-                console.info("=======>"+result);
-                const pagination = this.state.pagination;
-                pagination.current = params.current;
-                pagination.pageSize = params.pageSize;
-                pagination.total = result.page.total;
-                pagination.showTotal = () => `总共 ${result.page.total} 条`;
-                if (!pagination.current) {
-                    pagination.current = 1
-                }
-                ;
-                this.setState({
-                    loading: false,
-                    data: result.data,
-                    pagination
-                });
-            }
-        });
-    },
-
-    //新增跟编辑弹窗
-    showModal(title, record, canEdit) {
-        var record = record;
-        var me = this;
-        Utils.ajaxData({
-            url: '/act/flowControl/getAllForUVDetail.htm',
-            data: {
-                id: record.id
-            },
+            url: '/modules/manage/system/user/find.htm',
             method: 'get',
             callback: (result) => {
-                me.setState({
-                    canEdit: canEdit,
-                    visibleAc: true,
-                    title: title,
-                    // record: result.data,
-                    dataRecord:result.data
-                });
-            }
-        });
-    },
-
-
-
-    //新增
-    addModal(title) {
-        Utils.ajaxData({
-            url: '/modules/manage/user/list.htm',
-            method: "post",
-            callback: (result) => {
+                console.log("---："+result.sysUser.id);
                 this.setState({
-                    dataRecord: result.data.list,
-                    visibleAc: true,
-                    title: title,
+                    record: result.sysUser.id
+                });
+                params.userId = this.state.record;
+                Utils.ajaxData({
+                    url: '/acc/accountDetail/list.htm',
+                    method: "post",
+                    data: params,
+                    callback: (result) => {
+                        console.log("-12-："+this.state.record);
+                        const pagination = this.state.pagination;
+                        pagination.current = params.current;
+                        pagination.pageSize = params.pageSize;
+                        pagination.total = result.page.total;
+                        pagination.showTotal = () => `总共 ${result.page.total} 条`;
+                        if (!pagination.current) {
+                            pagination.current = 1
+                        }
+                        this.setState({
+                            loading: false,
+                            data: result.data,
+                            pagination
+                        });
+                    }
                 });
             }
         });
-
     },
+
     //隐藏弹窗
     hideModal() {
         console.log(1)
@@ -209,18 +181,8 @@ export default React.createClass({
                 dataIndex: 'create_time'
             },
             {
-                title: '充值金额',
+                title: '充值金额（元）',
                 dataIndex: 'amt'
-            }, {
-                title: '操作',
-                dataIndex: "",
-                render: (value, record) => {
-                    return (
-                        <div style={{ textAlign: "left" }}>
-                            <a href="#" onClick={me.showModal.bind(me, '按月统计', record, false)}>按月统计</a>
-                        </div>
-                    )
-                }
             }];
 
         var state = this.state;
@@ -237,8 +199,6 @@ export default React.createClass({
                        pagination={this.state.pagination}
                        loading={this.state.loading}
                        onChange={this.handleTableChange} />
-                <UVMonthDetial ref="UVMonthDetial"  visible={state.visibleAc}    title={state.title} hideModal={me.hideModal}
-                                    record={state.record} dataRecord={state.dataRecord} pagination={state.pagination} canEdit={state.canEdit}/>
             </div>
         );
 

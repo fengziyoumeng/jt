@@ -13,18 +13,18 @@ let SeachForm = React.createClass({
             roleList: []
         }
     },
-    handleQuery() {
-        var params = this.props.form.getFieldsValue();
-        var json = { orderCreatStartTime: '', orderCreatEndTime: '',pHandPerson:params.pHandPerson,realName: params.realName, phone: params.phone, orderNo: params.orderNo, state: params.state};
-        if (params.orderCreatTime) {
-            json.orderCreatStartTime = (DateFormat.formatDate(params.orderCreatTime[0])).substring(0, 10);
-            json.orderCreatEndTime = (DateFormat.formatDate(params.orderCreatTime[1])).substring(0, 10);
-        }
+    handleQuery(date,dateString) {
+        beginTime = dateString[0];
+        endTime = dateString[1];
+        var json = {beginTime:beginTime,endTime:endTime};
+        console.log(json);
         this.props.passParams({
             searchParams: JSON.stringify(json),
             pageSize: 10,
             current: 1,
         });
+        this.setState({dataVlaue:date});
+        this.target.value = this.state.dataVlaue;
     },
     handleReset() {
         this.props.form.resetFields();
@@ -32,13 +32,6 @@ let SeachForm = React.createClass({
             pageSize: 10,
             current: 1,
         });
-    },
-    handleExcelReady(date,dateString){
-        beginTime = dateString[0];
-        endTime = dateString[1];
-    },
-    handleOut() {
-        window.open("/act/count/excel/flowUvInfo.htm?beginTime="+beginTime+"&endTime="+endTime);
     },
     render() {
         const {getFieldProps} = this.props.form;
