@@ -161,4 +161,9 @@
         </where>
     </select>
 
+    <select id="countBorrowers" resultType="java.lang.Long" parameterType="java.util.HashMap">
+        select COUNT(merchant_id)
+        from sj_merchant_borrower
+        where merchant_id = #{userId}
+    </select>
 </mapper>

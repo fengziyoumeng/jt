@@ -6,6 +6,7 @@ import com.rongdu.cashloan.cl.domain.AccountDetailInfo;
 import com.rongdu.cashloan.cl.domain.AccountInfo;
 import com.rongdu.cashloan.cl.mapper.AccountDetailInfoMapper;
 import com.rongdu.cashloan.cl.mapper.AccountInfoMapper;
+import com.rongdu.cashloan.cl.mapper.MerchantBorrowerMapper;
 import com.rongdu.cashloan.cl.service.AccountService;
 import com.rongdu.cashloan.core.common.context.Constant;
 import com.rongdu.cashloan.core.common.exception.ServiceException;
@@ -28,6 +29,9 @@ public class AccountServiceImpl implements AccountService {
     @Resource
     private AccountDetailInfoMapper accountDetailInfoMapper;
 
+    @Resource
+    private MerchantBorrowerMapper merchantBorrowerMapper;
+
     @Override
     public Page<AccountDetailInfo> getAllAccountDetailInfo(Map<String, Object> params,int currentPage,int pageSize) throws Exception {
         try {
@@ -44,6 +48,8 @@ public class AccountServiceImpl implements AccountService {
         Map<String,Object> resultMap = new HashMap<String, Object>();
         AccountInfo accountInfo = accountInfoMapper.getAccountInfo(params);
         resultMap.put("balance",accountInfo.getBalance());
+        Long count = merchantBorrowerMapper.countBorrowers(params);
+        resultMap.put("count",count);
         return resultMap;
     }
 }

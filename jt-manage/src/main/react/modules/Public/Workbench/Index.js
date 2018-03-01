@@ -72,7 +72,7 @@ export default React.createClass({
                         </div>
                         <div className='blk-top-item'>
                             <div className='blk-title'>用户数（单位：个）</div>
-                            <div className='blk-number'><a href="http://www.baidu.com">2001</a></div>
+                            <div className='blk-number'><a href="http://www.baidu.com">{data.count}</a></div>
                         </div>
                     </div>
                 </div>

@@ -24,4 +24,6 @@ public interface MerchantBorrowerMapper extends BaseMapper<MerchantBorrower, Lon
     List<MerchantBorrower> getUserDataList(Map<String, Object> params);
 
     void setAuditStatus(Map<String, Object> params);
+
+    Long countBorrowers(Map<String, Object> params);
 }
