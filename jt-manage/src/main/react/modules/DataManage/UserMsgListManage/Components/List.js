@@ -1,11 +1,9 @@
 import React from 'react'
-import {
-    Table,
-    Modal,
-    Popover
-} from 'antd';
+import {Dropdown, Button,Icon, Menu, Modal, Table} from 'antd';
 import AddFlowInfo from './AddFlowInfo'
+
 var confirm = Modal.confirm;
+var userData;
 export default React.createClass({
     getInitialState() {
         return {
@@ -23,10 +21,11 @@ export default React.createClass({
         this.setState({
             params: nextProps.params,
         });
-        // this.fetch(nextProps.params);
+        console.log(nextProps.params);
+        this.fetch(nextProps.params);
     },
     componentDidMount() {
-        // this.fetch();
+        this.fetch();
     },
     hideModal() {
         this.setState({
@@ -75,12 +74,11 @@ export default React.createClass({
         this.setState({
             pagination: pager,
         });
-        /*console("翻页查询参数>>>>"+this.state.params);
         this.fetch({
             pageSize: pagination.pageSize,
             current: pagination.current,
             params:this.state.params
-        });*/
+        });
     },
     fetch(params = {
         pageSize: 10,
@@ -90,15 +88,11 @@ export default React.createClass({
             loading: true
         });
         Utils.ajaxData({
-            url: '/act/flowControl/getInfoManage.htm',
+            url: '/act/get/userdata/list.htm',
             data: params,
             callback: (result) => {
-                // console.info("=======>"+JSON.stringify(result.data));
                 const pagination = this.state.pagination;
-                pagination.total = result.totalCount;
-                if (!pagination.current) {
-                    pagination.current = 1
-                };
+                pagination.total = result.page.total;
                 this.setState({
                     loading: false,
                     data: result.data,
@@ -140,6 +134,24 @@ export default React.createClass({
             onCancel: function () { }
         });
     },
+    handleMenuClick(value,record){
+        /*Utils.ajaxData({
+            url: '/act/set/userdata/status.htm',
+            data: value.key,
+            callback: (result) => {
+                const pagination = this.state.pagination;
+                pagination.total = result.page.total;
+                this.setState({
+                    loading: false,
+                    data: result.data,
+                    pagination,
+                });
+                this.clearList();
+            }
+        });*/
+    },
+    setUserId(record){
+    },
     render() {
         var me = this;
         const {
@@ -152,52 +164,72 @@ export default React.createClass({
         };
         const hasSelected = selectedRowKeys.length > 0;
 
+        const menu = (
+            <Menu onClick={this.handleMenuClick}>
+                <Menu.Item key="1">审核通过</Menu.Item>
+                <Menu.Item key="2">审核拒绝</Menu.Item>
+            </Menu>
+        );
+
         var columns = [{
             title: '手机号',
-            dataIndex: 'pname'
+            dataIndex: 'authMobile'
         }, {
             title: '运营商',
-            dataIndex: "minLimit",
+            dataIndex: "operatorStatus",
         }, {
             title: '姓名',
-            dataIndex: "ploanMinTime",
+            dataIndex: "realName",
         },  {
             title: '年龄',
-            dataIndex: "id"
+            dataIndex: "age"
         }, {
             title: '性别',
-            dataIndex: "premark",
+            dataIndex: "sex",
         },{
             title: '地区',
-            dataIndex: "pcode"
+            dataIndex: "provinceAddress",
         },{
             title: 'QQ号',
-            dataIndex: "pChannelPrice"
+            dataIndex: "qq"
         },{
             title: '芝麻分',
-            dataIndex: "pHandPerson"
+            dataIndex: "zhimaScore"
         }, {
             title: '日期',
-            dataIndex: "psort"
+            dataIndex: "addTime"
         }, {
             title: '扣款',
-            dataIndex: "pstate"  ,
+            dataIndex: "price"  ,
         }, {
-            title: '信息',
-            dataIndex: "pBorrowNum"
+            title: '状态',
+            dataIndex: "audit",
+            render(value,record){
+                if(value==0){
+                    return "未审核"
+                }else if(value==1){
+                    return "已通过"
+                }else if(value==2){
+                    return "未通过"
+                }
+            }
         },{
             title: '操作',
             dataIndex: "",
+            render(text, record) {
+                return <div style={{ textAlign: "left" }}>
+                    <Dropdown overlay={menu}>
+                        <Button >
+                            管理 <Icon type="down" />
+                        </Button>
+                    </Dropdown>
+                </div>
+            }
         }];
 
         var state = this.state;
         return (
             <div className="block-panel">
-                {/*<div className="actionBtns" style={{ marginBottom: 16 }}>
-                    <button className="ant-btn" onClick={this.showModal.bind(this, '新增', null, true) }>
-                        新增
-                    </button>
-                </div>*/}
                 <Table columns={columns} rowKey={this.rowKey}  size="middle"
                        params ={this.props.params}
                        dataSource={this.state.data}

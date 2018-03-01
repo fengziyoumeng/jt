@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- sj_query_condition表:用户消息模块 -->
+<mapper namespace="com.rongdu.cashloan.manage.mapper.UserDataMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.manage.domain.UserData">
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="borrower_id" property="borrowerId" jdbcType="BIGINT" />
+        <result column="card_id" property="cardId" jdbcType="VARCHAR" />
+        <result column="card_type" property="cardType" jdbcType="INTEGER" />
+        <result column="real_name" property="realName" jdbcType="VARCHAR" />
+        <result column="sex" property="sex" jdbcType="INTEGER" />
+        <result column="age" property="age" jdbcType="INTEGER" />
+        <result column="qq" property="qq" jdbcType="VARCHAR" />
+        <result column="weixin" property="weixin" jdbcType="VARCHAR" />
+        <result column="auth_status" property="authStatus" jdbcType="INTEGER" />
+        <result column="zhima_status" property="zhimaStatus" jdbcType="INTEGER" />
+        <result column="jingdong_status" property="jingdongStatus" jdbcType="INTEGER" />
+        <result column="operator_status" property="operatorStatus" jdbcType="INTEGER" />
+        <result column="is_auth_pay" property="isAuthPay" jdbcType="VARCHAR" />
+        <result column="auth_time" property="authTime" jdbcType="TIMESTAMP" />
+        <result column="province_address" property="provinceAddress" jdbcType="VARCHAR" />
+        <result column="city_address" property="cityAddress" jdbcType="VARCHAR" />
+        <result column="auth_mobile" property="authMobile" jdbcType="VARCHAR" />
+        <result column="zhima_score" property="zhimaScore" jdbcType="INTEGER" />
+        <result column="price" property="price" jdbcType="DECIMAL" />
+        <result column="is_detail" property="isDetail" jdbcType="INTEGER" />
+        <result column="audit" property="audit" jdbcType="INTEGER" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        user_id,borrower_id,card_id,card_type,real_name,sex,age,qq,weixin,auth_status,zhima_status,
+        jingdong_status,operator_status,is_auth_pay,province_address,city_address,auth_mobile,zhima_score,
+        price,is_detail,audit
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" id != null and id != '' ">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="merchantId != null and merchantId != '' ">
+                and merchant_id = #{merchantId,jdbcType=BIGINT}
+            </if>
+            <if test="zmScoreMin != null and zmScoreMin != '' ">
+                and zm_score_min = #{zmScoreMin,jdbcType=INTEGER}
+            </if>
+            <if test="zmScoreMax != null and zmScoreMax != '' ">
+                and zm_score_max = #{zmScoreMax,jdbcType=INTEGER}
+            </if>
+            <if test="ageMin != null and ageMin != '' ">
+                and age_min = #{ageMin,jdbcType=INTEGER}
+            </if>
+            <if test="ageMax != null and ageMax != '' ">
+                and age_max = #{ageMax,jdbcType=INTEGER}
+            </if>
+            <if test="dataAmount != null and dataAmount != '' ">
+                and data_amount = #{dataAmount,jdbcType=INTEGER}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    <update id="update" parameterType="com.rongdu.cashloan.manage.domain.UserData">
+        update sj_query_condition set
+            merchant_id = #{merchantId,jdbcType=BIGINT},
+            zm_score_min = #{zmScoreMin,jdbcType=INTEGER},
+            zm_score_max = #{zmScoreMax,jdbcType=INTEGER},
+            age_min = #{ageMin,jdbcType=INTEGER},
+            age_max = #{ageMax,jdbcType=INTEGER},
+            data_amount = #{dataAmount,jdbcType=INTEGER},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from sj_query_condition
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from sj_query_condition
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from sj_query_condition
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

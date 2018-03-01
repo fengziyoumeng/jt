@@ -26,57 +26,6 @@ var imagesList = [];
 var vlu = '';
 
 
-Utils.ajaxData({
-    url: '/act/flowControl/getMutilCheckBox.htm',
-    method: 'get',
-    type: 'json',
-    data: {
-        "typeCode": "FLOWINFO_SHOW_TYPE"
-    },
-    callback: (result) => {
-        sortList = result.data;
-    }
-});
-
-Utils.ajaxData({
-    url: '/act/flowControl/getMutilCheckBox.htm',
-    method: 'get',
-    type: 'json',
-    data : {
-        "typeCode":"FLOWINFO_P_TAG"
-    },
-    callback: (result) => {
-        tagList = result.data;
-    }
-});
-
-
-Utils.ajaxData({
-    url: '/act/flowControl/getMutilCheckBox.htm',
-    method: 'get',
-    type: 'json',
-    data : {
-        "typeCode":"FLOWINFO_P_PROCESS"
-    },
-    callback: (result) => {
-        processList = result.data;
-    }
-});
-
-Utils.ajaxData({
-    url: '/act/flowControl/getMutilCheckBox.htm',
-    method: 'get',
-    type: 'json',
-    data : {
-        "typeCode":"FLOWINFO_BACKGROUND_IMAGE"
-    },
-    callback: (result) => {
-        imagesList = result.data;
-    }
-});
-
-
-
 function getBase64(img, callback) {
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result));

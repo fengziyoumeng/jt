@@ -113,7 +113,7 @@ export default React.createClass({
             params:this.state.params
         });*/
     },
-    fetch(params = {
+    /*fetch(params = {
         pageSize: 10,
         current: 1
     }) {
@@ -139,7 +139,7 @@ export default React.createClass({
                 this.clearList();
             }
         });
-    },
+    },*/
     clearList() {
         this.setState({
             selectedRowKeys: [],
