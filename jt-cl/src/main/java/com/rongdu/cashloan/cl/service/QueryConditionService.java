@@ -1,7 +1,7 @@
-package com.rongdu.cashloan.manage.service;
+package com.rongdu.cashloan.cl.service;
 
 import com.rongdu.cashloan.core.common.service.BaseService;
-import com.rongdu.cashloan.manage.domain.QueryCondition;
+import com.rongdu.cashloan.cl.domain.QueryCondition;
 
 /**
  * 用户消息Service

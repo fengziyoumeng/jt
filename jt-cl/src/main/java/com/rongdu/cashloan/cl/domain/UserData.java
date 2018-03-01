@@ -1,4 +1,4 @@
-package com.rongdu.cashloan.manage.domain;
+package com.rongdu.cashloan.cl.domain;
 
 import java.math.BigDecimal;
 import java.util.Date;

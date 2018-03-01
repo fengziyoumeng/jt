@@ -1,18 +1,18 @@
-package com.rongdu.cashloan.manage.service.impl;
+package com.rongdu.cashloan.cl.service.impl;
 
 import javax.annotation.Resource;
 
+import com.rongdu.cashloan.cl.mapper.QueryConditionMapper;
 import com.rongdu.cashloan.core.common.util.JsonUtil;
 import com.rongdu.cashloan.core.common.util.StringUtil;
-import com.rongdu.cashloan.manage.service.QueryConditionService;
+import com.rongdu.cashloan.cl.service.QueryConditionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.rongdu.cashloan.core.common.mapper.BaseMapper;
 import com.rongdu.cashloan.core.common.service.impl.BaseServiceImpl;
-import com.rongdu.cashloan.manage.mapper.QueryConditionMapper;
-import com.rongdu.cashloan.manage.domain.QueryCondition;
+import com.rongdu.cashloan.cl.domain.QueryCondition;
 
 import java.util.Date;
 import java.util.HashMap;

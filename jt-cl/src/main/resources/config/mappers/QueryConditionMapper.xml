@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- sj_query_condition表:用户消息模块 -->
-<mapper namespace="com.rongdu.cashloan.manage.mapper.QueryConditionMapper">
+<mapper namespace="com.rongdu.cashloan.cl.mapper.QueryConditionMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.manage.domain.QueryCondition">
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.QueryCondition">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="merchant_id" property="merchantId" jdbcType="BIGINT" />
         <result column="zm_score_min" property="zmScoreMin" jdbcType="INTEGER" />
@@ -50,12 +50,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.manage.domain.QueryCondition">
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.QueryCondition">
         insert into sj_query_condition(merchant_id,zm_score_min,zm_score_max,age_min,age_max,data_amount,update_time)values(#{merchantId,jdbcType=BIGINT},#{zmScoreMin,jdbcType=INTEGER},#{zmScoreMax,jdbcType=INTEGER},#{ageMin,jdbcType=INTEGER},#{ageMax,jdbcType=INTEGER},#{dataAmount,jdbcType=INTEGER},#{updateTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.manage.domain.QueryCondition">
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.QueryCondition">
         update sj_query_condition set 
             merchant_id = #{merchantId,jdbcType=BIGINT},
             zm_score_min = #{zmScoreMin,jdbcType=INTEGER},

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- sj_merchant_borrower表:用户消息模块 -->
-<mapper namespace="com.rongdu.cashloan.manage.mapper.MerchantBorrowerMapper">
+<mapper namespace="com.rongdu.cashloan.cl.mapper.MerchantBorrowerMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.manage.domain.MerchantBorrower">
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MerchantBorrower">
         <result column="merchant_id" property="merchantId" jdbcType="BIGINT" />
         <result column="borrower_id" property="borrowerId" jdbcType="BIGINT" />
         <result column="auth" property="auth" jdbcType="INTEGER" />
         <result column="is_detail" property="isDetail" jdbcType="INTEGER" />
     </resultMap>
-    <resultMap id="userDataResultMap" type="com.rongdu.cashloan.manage.domain.UserData">
+    <resultMap id="userDataResultMap" type="com.rongdu.cashloan.cl.domain.UserData">
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="borrower_id" property="borrowerId" jdbcType="BIGINT" />
         <result column="card_id" property="cardId" jdbcType="VARCHAR" />
@@ -59,12 +59,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.manage.domain.MerchantBorrower">
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MerchantBorrower">
         insert into sj_merchant_borrower(merchant_id,borrower_id,auth,is_detail,add_time)values(#{merchantId,jdbcType=BIGINT},#{borrowerId,jdbcType=BIGINT},#{auth,jdbcType=INTEGER},#{isDetail,jdbcType=INTEGER},#{addTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.manage.domain.MerchantBorrower">
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MerchantBorrower">
         update sj_merchant_borrower set 
             merchant_id = #{merchantId,jdbcType=BIGINT},
             borrower_id = #{borrowerId,jdbcType=BIGINT},

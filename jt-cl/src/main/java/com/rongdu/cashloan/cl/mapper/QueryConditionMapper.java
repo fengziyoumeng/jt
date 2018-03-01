@@ -1,8 +1,8 @@
-package com.rongdu.cashloan.manage.mapper;
+package com.rongdu.cashloan.cl.mapper;
 
 import com.rongdu.cashloan.core.common.mapper.BaseMapper;
 import com.rongdu.cashloan.core.common.mapper.RDBatisDao;
-import com.rongdu.cashloan.manage.domain.QueryCondition;
+import com.rongdu.cashloan.cl.domain.QueryCondition;
 
 /**
  * 用户消息Dao

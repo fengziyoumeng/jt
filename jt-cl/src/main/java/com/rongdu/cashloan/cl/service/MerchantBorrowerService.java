@@ -1,11 +1,10 @@
-package com.rongdu.cashloan.manage.service;
+package com.rongdu.cashloan.cl.service;
 
 import com.github.pagehelper.Page;
 import com.rongdu.cashloan.core.common.service.BaseService;
-import com.rongdu.cashloan.manage.domain.MerchantBorrower;
-import com.rongdu.cashloan.manage.domain.UserData;
+import com.rongdu.cashloan.cl.domain.MerchantBorrower;
+import com.rongdu.cashloan.cl.domain.UserData;
 
-import java.util.List;
 import java.util.Map;
 
 /**

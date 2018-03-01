@@ -1,11 +1,10 @@
 package com.rongdu.cashloan.manage.controller;
 
-import com.rongdu.cashloan.cl.domain.AdInfo;
 import com.rongdu.cashloan.core.common.context.Constant;
 import com.rongdu.cashloan.core.common.util.ServletUtils;
 import com.rongdu.cashloan.core.common.web.controller.BaseController;
-import com.rongdu.cashloan.manage.domain.QueryCondition;
-import com.rongdu.cashloan.manage.service.QueryConditionService;
+import com.rongdu.cashloan.cl.domain.QueryCondition;
+import com.rongdu.cashloan.cl.service.QueryConditionService;
 import com.rongdu.cashloan.system.domain.SysUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 

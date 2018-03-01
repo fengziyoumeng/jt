@@ -110,17 +110,15 @@ export default React.createClass({
     refreshList() {
         this.fetch();
     },
-    delete(record) {
+    setAuditStatus(record) {
         var me = this;
         confirm({
             title: '删除后不可恢复，确定要删除吗？',
             onOk: function () {
                 Utils.ajaxData({
-                    url: "/act/flowControl/delete.htm",
+                    url: "/act/set/userdata/status.htm",
                     data: {
                         id: record.id,
-                        code: record.code,
-                        picName:record.picName
                     },
                     method: 'post',
                     callback: (result) => {
@@ -134,21 +132,8 @@ export default React.createClass({
             onCancel: function () { }
         });
     },
-    handleMenuClick(value,record){
-        /*Utils.ajaxData({
-            url: '/act/set/userdata/status.htm',
-            data: value.key,
-            callback: (result) => {
-                const pagination = this.state.pagination;
-                pagination.total = result.page.total;
-                this.setState({
-                    loading: false,
-                    data: result.data,
-                    pagination,
-                });
-                this.clearList();
-            }
-        });*/
+    handleMenuClick(record){
+
     },
     setUserId(record){
     },
@@ -164,12 +149,12 @@ export default React.createClass({
         };
         const hasSelected = selectedRowKeys.length > 0;
 
-        const menu = (
+        /*const menu = (
             <Menu onClick={this.handleMenuClick}>
                 <Menu.Item key="1">审核通过</Menu.Item>
                 <Menu.Item key="2">审核拒绝</Menu.Item>
             </Menu>
-        );
+        );*/
 
         var columns = [{
             title: '手机号',
@@ -218,10 +203,14 @@ export default React.createClass({
             dataIndex: "",
             render(text, record) {
                 return <div style={{ textAlign: "left" }}>
-                    <Dropdown overlay={menu}>
-                        <Button >
-                            管理 <Icon type="down" />
-                        </Button>
+                    <Dropdown overlay={
+                        <Menu onClick={me.handleMenuClick.bind(record)}>
+                            <Menu.Item key="1">审核通过</Menu.Item>
+                            <Menu.Item key="2">审核拒绝</Menu.Item>
+                        </Menu>}>
+                    <Button >
+                        管理 <Icon type="down" />
+                    </Button>
                     </Dropdown>
                 </div>
             }

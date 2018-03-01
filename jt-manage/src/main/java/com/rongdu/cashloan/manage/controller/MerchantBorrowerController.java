@@ -1,15 +1,13 @@
 package com.rongdu.cashloan.manage.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.rongdu.cashloan.core.common.context.Constant;
 import com.rongdu.cashloan.core.common.util.JsonUtil;
 import com.rongdu.cashloan.core.common.util.RdPage;
 import com.rongdu.cashloan.core.common.util.ServletUtils;
 import com.rongdu.cashloan.core.common.web.controller.BaseController;
-import com.rongdu.cashloan.manage.domain.MerchantBorrower;
-import com.rongdu.cashloan.manage.domain.UserData;
-import com.rongdu.cashloan.manage.service.MerchantBorrowerService;
+import com.rongdu.cashloan.cl.domain.MerchantBorrower;
+import com.rongdu.cashloan.cl.service.MerchantBorrowerService;
 import com.rongdu.cashloan.system.domain.SysUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 

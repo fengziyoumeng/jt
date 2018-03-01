@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- sj_query_condition表:用户消息模块 -->
-<mapper namespace="com.rongdu.cashloan.manage.mapper.UserDataMapper">
+<mapper namespace="com.rongdu.cashloan.cl.mapper.UserDataMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.manage.domain.UserData">
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.UserData">
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="borrower_id" property="borrowerId" jdbcType="BIGINT" />
         <result column="card_id" property="cardId" jdbcType="VARCHAR" />
@@ -65,7 +65,7 @@
         </trim>
     </sql>
     
-    <update id="update" parameterType="com.rongdu.cashloan.manage.domain.UserData">
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.UserData">
         update sj_query_condition set
             merchant_id = #{merchantId,jdbcType=BIGINT},
             zm_score_min = #{zmScoreMin,jdbcType=INTEGER},

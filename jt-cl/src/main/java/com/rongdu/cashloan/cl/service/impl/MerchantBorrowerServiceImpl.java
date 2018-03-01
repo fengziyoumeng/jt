@@ -1,27 +1,22 @@
-package com.rongdu.cashloan.manage.service.impl;
+package com.rongdu.cashloan.cl.service.impl;
 
-import com.ctc.wstx.util.DataUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.rongdu.cashloan.cl.domain.AccountDetailInfo;
+import com.rongdu.cashloan.cl.mapper.MerchantBorrowerMapper;
+import com.rongdu.cashloan.cl.mapper.UserDataMapper;
 import com.rongdu.cashloan.core.common.mapper.BaseMapper;
 import com.rongdu.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.rongdu.cashloan.core.common.util.DateUtil;
-import com.rongdu.cashloan.manage.domain.MerchantBorrower;
-import com.rongdu.cashloan.manage.domain.UserData;
-import com.rongdu.cashloan.manage.mapper.MerchantBorrowerMapper;
-import com.rongdu.cashloan.manage.mapper.UserDataMapper;
-import com.rongdu.cashloan.manage.service.MerchantBorrowerService;
-import org.apache.fop.util.DataURIResolver;
+import com.rongdu.cashloan.cl.domain.MerchantBorrower;
+import com.rongdu.cashloan.cl.domain.UserData;
+import com.rongdu.cashloan.cl.service.MerchantBorrowerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.xml.crypto.Data;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
