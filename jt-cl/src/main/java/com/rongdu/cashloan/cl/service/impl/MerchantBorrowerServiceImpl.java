@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,9 +60,6 @@ public class MerchantBorrowerServiceImpl extends BaseServiceImpl<UserData, Long>
 
 				params.put("end",format.format(dayEndTime));
 			}
-			for (Map.Entry<String, Object> entry : params.entrySet()) {
-				System.out.println(entry.getKey()+":"+entry.getValue());
-			}
 
 			PageHelper.startPage((int)params.get("current"), (int)params.get("pageSize"));
 			merchantBorrower = merchantBorrowerMapper.getUserDataList(params);
@@ -69,5 +67,18 @@ public class MerchantBorrowerServiceImpl extends BaseServiceImpl<UserData, Long>
 			logger.info("查询失败",e);
 		}
 		return (Page<MerchantBorrower>)merchantBorrower;
+	}
+
+	@Override
+	public void setAuditStatus(Long merchantId, String borrowerId, String audit) {
+		Map<String,Object> params = new HashMap();
+		try{
+			params.put("merchantId",merchantId);
+			params.put("borrowerId",borrowerId);
+			params.put("audit",audit);
+			merchantBorrowerMapper.setAuditStatus(params);
+		}catch (Exception e){
+			logger.info("状态设置失败",e);
+		}
 	}
 }

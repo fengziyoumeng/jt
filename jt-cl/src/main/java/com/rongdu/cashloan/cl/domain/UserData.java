@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class UserData {
-
+    private Long id;
     private Long userId;
     private Long borrowerId;
     private String cardId;
@@ -30,6 +30,14 @@ public class UserData {
     private Integer audit;
 
     private Date addTime;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Date getAddTime() {
         return addTime;

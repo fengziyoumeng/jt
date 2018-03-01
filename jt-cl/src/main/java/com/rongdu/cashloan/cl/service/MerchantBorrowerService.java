@@ -20,4 +20,6 @@ import java.util.Map;
 public interface MerchantBorrowerService extends BaseService<UserData, Long>{
 
     Page<MerchantBorrower> getUserDataList(Map<String,Object> params);
+
+    void setAuditStatus(Long id, String borrowerId, String audit);
 }

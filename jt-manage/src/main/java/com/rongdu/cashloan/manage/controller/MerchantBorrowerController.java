@@ -32,7 +32,7 @@ import java.util.Map;
 public class MerchantBorrowerController extends BaseController {
 
    @Resource
-   private MerchantBorrowerService userDataService;
+   private MerchantBorrowerService merchantBorrowerService;
 
 
    @RequestMapping("/act/get/userdata/list.htm")
@@ -50,7 +50,7 @@ public class MerchantBorrowerController extends BaseController {
          params.put("merchantId",loginUser.getId());
          params.put("current",current);
          params.put("pageSize",pageSize);
-         Page<MerchantBorrower> dataList = userDataService.getUserDataList(params);
+         Page<MerchantBorrower> dataList = merchantBorrowerService.getUserDataList(params);
 
          result.put(Constant.RESPONSE_DATA, dataList);
          result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(dataList));
@@ -63,12 +63,12 @@ public class MerchantBorrowerController extends BaseController {
       ServletUtils.writeToResponse(response,result);
    }
    @RequestMapping("/act/set/userdata/status.htm")
-   public void setStatus(@RequestParam(value="key") String params){
+   public void setStatus(@RequestParam(value="audit") String audit,
+                         @RequestParam(value="borrowerId") String borrowerId){
       Map<String,Object> result = new HashMap<String,Object>();
       try {
-         System.out.println(params);
          SysUser loginUser = this.getLoginUser(request);
-
+         merchantBorrowerService.setAuditStatus(loginUser.getId(),borrowerId,audit);
          result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
          result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
       }catch (Exception e){

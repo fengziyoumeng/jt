@@ -9,7 +9,8 @@ const RangePicker = DatePicker.RangePicker;
 let SeachForm = React.createClass({
     getInitialState() {
         return {
-            roleList: []
+            roleList: [],
+            selectValue:""
         }
     },
     handleQuery() {
@@ -22,7 +23,7 @@ let SeachForm = React.createClass({
         });
     },
     handleReset() {
-        this.props.form.resetFields();
+        // this.props.form.resetFields();
         this.props.passParams({
             pageSize: 10,
             current: 1,
@@ -46,17 +47,18 @@ let SeachForm = React.createClass({
         });
     },
     render() {
+        var me = this;
         const {getFieldProps} = this.props.form;
         return (
             <Form inline>
                  <FormItem label="日期:">
-                     <RangePicker  onChange={this.onChangeDate}/>
+                     <RangePicker allowClear={true} onChange={this.onChangeDate}/>
                  </FormItem>
                  <FormItem label="手机号码:">
                       <Input  {...getFieldProps('mobile')} />
                  </FormItem>
                  <FormItem label="状态:">
-                     <Select defaultValue="" style={{ width: 120 }} onChange={this.handleChange}>
+                     <Select defaultValue={me.state.selectValue}  style={{ width: 120 }} onChange={this.handleChange}>
                          <Option value="0">未审核</Option>
                          <Option value="1">已通过</Option>
                          <Option value="2" >未通过</Option>
@@ -65,7 +67,7 @@ let SeachForm = React.createClass({
                  </FormItem>
                  <FormItem><Button type="primary" onClick={this.handleQuery}>查询</Button></FormItem>
                  <FormItem><Button type="reset" onClick={this.handleReset}>重置</Button></FormItem>
-                 <FormItem><Button type="export" onClick={this.handleExport}>导出</Button></FormItem>
+                 {/*<FormItem><Button type="export" onClick={this.handleExport}>导出</Button></FormItem>*/}
             </Form>
         );
     }

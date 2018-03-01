@@ -4,12 +4,14 @@
 <mapper namespace="com.rongdu.cashloan.cl.mapper.MerchantBorrowerMapper">
     <!--返回Map-->        
     <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MerchantBorrower">
+        <id column="id" jdbcType="BIGINT" property="id" />
         <result column="merchant_id" property="merchantId" jdbcType="BIGINT" />
         <result column="borrower_id" property="borrowerId" jdbcType="BIGINT" />
         <result column="auth" property="auth" jdbcType="INTEGER" />
         <result column="is_detail" property="isDetail" jdbcType="INTEGER" />
     </resultMap>
     <resultMap id="userDataResultMap" type="com.rongdu.cashloan.cl.domain.UserData">
+        <id column="id" jdbcType="BIGINT" property="id" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="borrower_id" property="borrowerId" jdbcType="BIGINT" />
         <result column="card_id" property="cardId" jdbcType="VARCHAR" />
@@ -38,7 +40,7 @@
         merchant_id,borrower_id,auth,is_detail,add_time
     </sql>
     <sql id="User_Data_List">
-        user_id,borrower_id,card_id,card_type,real_name,sex,age,qq,weixin,auth_status,zhima_status,
+        id,user_id,borrower_id,card_id,card_type,real_name,sex,age,qq,weixin,auth_status,zhima_status,
         jingdong_status,operator_status,is_auth_pay,province_address,city_address,auth_mobile,zhima_score,
         price,is_detail,audit
     </sql>
@@ -72,6 +74,13 @@
             is_detail = #{isDetail,jdbcType=INTEGER},
             add_time = #{addTime,jdbcType=TIMESTAMP}
         where id = #{id ,jdbcType=INTEGER}
+    </update>
+    <update id="setAuditStatus" parameterType="java.util.HashMap">
+        update sj_merchant_borrower set
+            audit = #{audit,jdbcType=INTEGER}
+        where
+            merchant_id = #{merchantId} and borrower_id = #{borrowerId} and audit = 0
+
     </update>
 
 
@@ -127,7 +136,8 @@
             cb.zhima_status AS zhima_status,cb.jingdong_status AS jingdong_status,cb.operator_status AS operator_status,
             cb.is_auth_pay AS is_auth_pay,
             cu.zhima_score AS zhima_score,cu.auth_mobile AS auth_mobile,
-            smb.price AS price,smb.is_detail AS is_detail,smb.audit AS audit,smb.add_time AS add_time
+            smb.price AS price,smb.is_detail AS is_detail,smb.audit AS audit,smb.add_time AS add_time,
+            smb.id AS id
         from crm_user cu
         LEFT JOIN crm_borrower cb ON cu.user_id = cb.user_id
         LEFT JOIN sj_merchant_borrower smb ON smb.borrower_id = cu.user_id

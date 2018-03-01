@@ -21,7 +21,6 @@ export default React.createClass({
         this.setState({
             params: nextProps.params,
         });
-        console.log(nextProps.params);
         this.fetch(nextProps.params);
     },
     componentDidMount() {
@@ -44,7 +43,6 @@ export default React.createClass({
             record.ptag = record.ptag.split(',');
             record.pprocess = record.pprocess.split(',');
             this.refs.AddFlowInfo.setFieldsValue(record);
-            //console.log(record);
         } else if (title == '新增') {
             record = null
         }
@@ -110,32 +108,22 @@ export default React.createClass({
     refreshList() {
         this.fetch();
     },
-    setAuditStatus(record) {
+    setAuditStatus(value,record) {
         var me = this;
-        confirm({
-            title: '删除后不可恢复，确定要删除吗？',
-            onOk: function () {
-                Utils.ajaxData({
-                    url: "/act/set/userdata/status.htm",
-                    data: {
-                        id: record.id,
-                    },
-                    method: 'post',
-                    callback: (result) => {
-                        Modal.success({
-                            title: result.msg,
-                        });
-                        me.refreshList();
-                    }
-                });
+        Utils.ajaxData({
+            url: "/act/set/userdata/status.htm",
+            data: {
+                borrowerId:value.userId,
+                audit: record.key,
             },
-            onCancel: function () { }
+            method: 'post',
+            callback: (result) => {
+                me.refreshList();
+            }
         });
     },
-    handleMenuClick(record){
-
-    },
-    setUserId(record){
+    handleMenuClick(value,record){
+        this.setAuditStatus(value,record);
     },
     render() {
         var me = this;
@@ -149,12 +137,6 @@ export default React.createClass({
         };
         const hasSelected = selectedRowKeys.length > 0;
 
-        /*const menu = (
-            <Menu onClick={this.handleMenuClick}>
-                <Menu.Item key="1">审核通过</Menu.Item>
-                <Menu.Item key="2">审核拒绝</Menu.Item>
-            </Menu>
-        );*/
 
         var columns = [{
             title: '手机号',
@@ -193,24 +175,24 @@ export default React.createClass({
                 if(value==0){
                     return "未审核"
                 }else if(value==1){
-                    return "已通过"
+                    return <font color={"green"}>已通过</font>
                 }else if(value==2){
-                    return "未通过"
+                    return <font color={"red"}>未通过</font>
                 }
             }
         },{
             title: '操作',
             dataIndex: "",
-            render(text, record) {
+            render(value, record) {
                 return <div style={{ textAlign: "left" }}>
-                    <Dropdown overlay={
-                        <Menu onClick={me.handleMenuClick.bind(record)}>
-                            <Menu.Item key="1">审核通过</Menu.Item>
-                            <Menu.Item key="2">审核拒绝</Menu.Item>
+                    <Dropdown  overlay={
+                        <Menu onClick={me.handleMenuClick.bind(value,record)}>
+                            <Menu.Item key="1" disabled={record.audit==0?false:true}>审核通过</Menu.Item>
+                            <Menu.Item key="2" disabled={record.audit==0?false:true}>审核拒绝</Menu.Item>
                         </Menu>}>
-                    <Button >
-                        管理 <Icon type="down" />
-                    </Button>
+                        <Button >
+                            管理 <Icon type="down" />
+                        </Button>
                     </Dropdown>
                 </div>
             }
