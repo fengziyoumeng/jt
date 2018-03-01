@@ -283,6 +283,7 @@ public class SysUserController extends BaseController {
 		}
 		List<SysRole> roleList = sysRoleService.getRoleListByUserId(sysUser.getId());
 		responsemap.put("name", sysUser.getName());
+		responsemap.put("sysUser", sysUser);
 		responsemap.put("roleList", roleList);
 		responsemap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 		responsemap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
