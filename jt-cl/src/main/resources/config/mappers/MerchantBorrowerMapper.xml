@@ -166,4 +166,10 @@
         from sj_merchant_borrower
         where merchant_id = #{userId}
     </select>
+
+    <select id="queryUserById" resultMap="BaseResultMap">
+        select borrower_id
+        from sj_merchant_borrower
+        where merchant_id = #{userId}
+    </select>
 </mapper>

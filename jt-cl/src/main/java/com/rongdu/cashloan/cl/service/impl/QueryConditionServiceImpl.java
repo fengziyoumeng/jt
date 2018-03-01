@@ -2,6 +2,8 @@ package com.rongdu.cashloan.cl.service.impl;
 
 import javax.annotation.Resource;
 
+import com.rongdu.cashloan.cl.domain.MerchantBorrower;
+import com.rongdu.cashloan.cl.mapper.MerchantBorrowerMapper;
 import com.rongdu.cashloan.cl.mapper.QueryConditionMapper;
 import com.rongdu.cashloan.core.common.util.JsonUtil;
 import com.rongdu.cashloan.core.common.util.StringUtil;
@@ -16,6 +18,7 @@ import com.rongdu.cashloan.cl.domain.QueryCondition;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -37,6 +40,8 @@ public class QueryConditionServiceImpl extends BaseServiceImpl<QueryCondition, L
    
     @Resource
     private QueryConditionMapper queryConditionMapper;
+    @Resource
+    private MerchantBorrowerMapper merchantBorrowerMapper;
 
 	@Override
 	public BaseMapper<QueryCondition, Long> getMapper() {
@@ -58,21 +63,42 @@ public class QueryConditionServiceImpl extends BaseServiceImpl<QueryCondition, L
 
 	}
 
+
 	@Override
 	public void saveOrUpdate(String data,Long userId) {
-		if(StringUtil.isNotBlank(data)){
-			QueryCondition queryCondition = JsonUtil.parse(data,QueryCondition.class);
-			Map params = JsonUtil.parse(data,Map.class);
-			if(queryCondition.getId()!=null){
-				queryCondition.setUpdateTime(new Date());
-				queryConditionMapper.updateSelective(params);
-			}else{
-				queryCondition.setMerchantId(userId);
-				queryCondition.setUpdateTime(new Date());
-				queryConditionMapper.save(queryCondition);
+		try{
+			if(StringUtil.isNotBlank(data)){
+				QueryCondition queryCondition = JsonUtil.parse(data,QueryCondition.class);
+				Map params = JsonUtil.parse(data,Map.class);
+				recommend(params,userId);
+				if(queryCondition.getId()!=null){
+					queryCondition.setUpdateTime(new Date());
+					queryConditionMapper.updateSelective(params);
+				}else{
+					queryCondition.setMerchantId(userId);
+					queryCondition.setUpdateTime(new Date());
+					queryConditionMapper.save(queryCondition);
+				}
 			}
+		}catch (Exception e){
+			logger.info("设置条件失败",e);
 		}
 
+	}
 
+	public void recommend(Map<String,Object> condition,Long userId){
+		//查询出当前用户拥有哪些用户的数据
+		List<MerchantBorrower> hasUserData = merchantBorrowerMapper.queryUserById(userId);
+		for (MerchantBorrower hasUserDatum : hasUserData) {
+			System.out.println(hasUserDatum.getBorrowerId());
+		}
+		System.out.println("-=======================-");
+		//查询出所有符合条件的用户
+		List<MerchantBorrower> user = queryConditionMapper.queryUserByCondition(condition);
+
+		for (MerchantBorrower aLong : user) {
+			System.out.println(aLong.getBorrowerId());
+
+		}
 	}
 }

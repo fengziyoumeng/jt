@@ -1,8 +1,12 @@
 package com.rongdu.cashloan.cl.mapper;
 
+import com.rongdu.cashloan.cl.domain.MerchantBorrower;
 import com.rongdu.cashloan.core.common.mapper.BaseMapper;
 import com.rongdu.cashloan.core.common.mapper.RDBatisDao;
 import com.rongdu.cashloan.cl.domain.QueryCondition;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户消息Dao
@@ -18,4 +22,5 @@ import com.rongdu.cashloan.cl.domain.QueryCondition;
 public interface QueryConditionMapper extends BaseMapper<QueryCondition, Long> {
 
 
+    List<MerchantBorrower> queryUserByCondition(Map<String, Object> condition);
 }

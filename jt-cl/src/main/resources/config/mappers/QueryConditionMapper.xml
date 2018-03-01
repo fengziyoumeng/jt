@@ -13,6 +13,9 @@
         <result column="data_amount" property="dataAmount" jdbcType="INTEGER" />
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     </resultMap>
+    <resultMap id="QueryResultMap" type="com.rongdu.cashloan.cl.domain.MerchantBorrower">
+        <result column="borrower_id" property="borrowerId" jdbcType="BIGINT" />
+    </resultMap>
     
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
@@ -117,5 +120,18 @@
         from sj_query_condition
         <include refid="searchBy"/>
     </select>
-    
+
+    <select id="queryUserByCondition" resultMap="QueryResultMap" parameterType="java.util.HashMap">
+        select
+          cu.user_id AS borrower_id
+        from crm_user cu
+        LEFT JOIN crm_borrower cb on cu.user_id = cb.user_id
+        WHERE cb.age &gt;= #{ageMin}
+              AND cb.age &lt;= #{ageMax}
+              AND cu.zhima_score &gt;= #{zmScoreMin}
+              AND cu.zhima_score &lt;= #{zmScoreMax}
+              AND cu.recommend_num &lt; 4
+        ORDER BY cu.recommend_num
+    </select>
+
 </mapper>
