@@ -1,6 +1,7 @@
 package com.rongdu.cashloan.manage.controller;
 
 import com.rongdu.cashloan.core.common.context.Constant;
+import com.rongdu.cashloan.core.common.exception.SimpleMessageException;
 import com.rongdu.cashloan.core.common.util.ServletUtils;
 import com.rongdu.cashloan.core.common.web.controller.BaseController;
 import com.rongdu.cashloan.cl.domain.QueryCondition;
@@ -38,10 +39,18 @@ public class QueryConditionController extends BaseController {
          SysUser loginUser = this.getLoginUser(request);
          queryConditionService.saveOrUpdate(data,loginUser.getId());
          result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-         result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+         result.put(Constant.RESPONSE_CODE_MSG, "数据设置成功！");
+
+      }catch (SimpleMessageException e){
+         result.put(Constant.RESPONSE_CODE, Constant.OTHER_CODE_VALUE);
+         result.put(Constant.RESPONSE_CODE_MSG, e.getMessage());
+
+      }catch (RuntimeException e){
+         result.put(Constant.RESPONSE_CODE, Constant.MSG_CODE_VALUE);
+         result.put(Constant.RESPONSE_CODE_MSG, e.getMessage());
+
       }catch (Exception e){
          result.put(Constant.RESPONSE_CODE, Constant.OTHER_CODE_VALUE);
-
          result.put(Constant.RESPONSE_CODE_MSG, "服务异常，请稍后重试");
       }
       ServletUtils.writeToResponse(response,result);
