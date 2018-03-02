@@ -27,5 +27,7 @@ public interface MerchantBorrowerMapper extends BaseMapper<MerchantBorrower, Lon
 
     Long countBorrowers(Map<String, Object> params);
 
+    List<Map<String, Object>> countBorrowersByGroup(Map<String, Object> params);
+
     List<MerchantBorrower> queryUserById(Long userId);
 }
