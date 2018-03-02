@@ -184,7 +184,8 @@ export default React.createClass({
         const hasSelected = selectedRowKeys.length > 0;
         var columns = [{
             title: '日期',
-            dataIndex: 'date'
+            dataIndex: 'date',
+            render:(text) => text.substring(0,10)
         }, {
             title: '用户数',
             dataIndex: "count_borrower"
