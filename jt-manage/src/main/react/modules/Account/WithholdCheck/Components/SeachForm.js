@@ -4,6 +4,8 @@ const createForm = Form.create;
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RangePicker = DatePicker.RangePicker;
+var beginTime;
+var endTime;
 
 let SeachForm = React.createClass({
     getInitialState() {
@@ -11,14 +13,17 @@ let SeachForm = React.createClass({
             roleList: []
         }
     },
-    handleQuery() {
-        var params = this.props.form.getFieldsValue();
-        var json = { pHandPerson: params.pHandPerson,productName:params.productName};
+    handleQuery(date,dateString) {
+        beginTime = dateString[0];
+        endTime = dateString[1];
+        var json = {beginTime:beginTime,endTime:endTime};
         this.props.passParams({
             searchParams: JSON.stringify(json),
             pageSize: 10,
             current: 1,
         });
+        this.setState({dataVlaue:date});
+        this.target.value = this.state.dataVlaue;
     },
     handleReset() {
         this.props.form.resetFields();
@@ -37,14 +42,9 @@ let SeachForm = React.createClass({
         const {getFieldProps} = this.props.form;
         return (
             <Form inline>
-                 <FormItem label="按录入人搜索:">
-                      <Input  {...getFieldProps('pHandPerson')} />
-                 </FormItem>
-                 <FormItem label="按产品名搜索:">
-                      <Input  {...getFieldProps('productName')} />
-                 </FormItem>
-                 <FormItem><Button type="primary" onClick={this.handleQuery}>查询</Button></FormItem>
-                 <FormItem><Button type="reset" onClick={this.handleReset}>重置</Button></FormItem>
+                <FormItem label="按日期查询:">
+                    <RangePicker   onChange={this.handleQuery}/>
+                </FormItem>
             </Form>
         );
     }

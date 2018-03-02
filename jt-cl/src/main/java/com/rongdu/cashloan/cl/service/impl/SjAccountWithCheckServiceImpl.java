@@ -53,6 +53,7 @@ public class SjAccountWithCheckServiceImpl implements SjAccWithCheckService {
                     BigDecimal tolPrice = countMan.multiply(price);
                     sjAccWithCheck.setAmt(tolPrice);
                     sjAccWithCheck.setUser_id((Long)map.get("merchant_id"));
+                    sjAccWithCheck.setCount_borrower((Long) map.get("merchant_count"));
                     sjAccWithCheck.setUnit_price(price);
                     sjAccWithCheck.setDate(dateFormat.parse(addTime));
                     sjAccWithCheck.setUpdate_date(new Date());
@@ -64,5 +65,16 @@ public class SjAccountWithCheckServiceImpl implements SjAccWithCheckService {
             e.printStackTrace();
         }
         return true;
+    }
+
+    @Override
+    public Page<SjAccWithCheck> getAllWithCheckInfo(Map<String, Object> params, int currentPage, int pageSize) throws Exception {
+        try {
+            PageHelper.startPage(currentPage, pageSize);
+            return(Page<SjAccWithCheck>)sjAccWithCheckMapper.listSjAccWithCheckInfos(params);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ServiceException(e.getMessage(),e, Constant.FAIL_CODE_VALUE);
+        }
     }
 }

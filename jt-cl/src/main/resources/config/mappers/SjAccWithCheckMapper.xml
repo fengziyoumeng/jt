@@ -3,14 +3,15 @@
 <mapper namespace="com.rongdu.cashloan.cl.mapper.SjAccWithCheckMapper">
   <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.SjAccWithCheck">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="date" jdbcType="TIMESTAMP" property="date" />
+    <result column="date" jdbcType="DATE" property="date" />
     <result column="unit_price" jdbcType="DECIMAL" property="unit_price" />
     <result column="amt" jdbcType="DECIMAL" property="amt" />
-    <result column="user_id" jdbcType="BIGINT" property="date" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="date" />
+    <result column="user_id" jdbcType="BIGINT" property="user_id" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="update_date" />
+    <result column="count_borrower" jdbcType="BIGINT" property="count_borrower" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, date, unit_price, amt,user_id,update_date
+    id, date, unit_price, amt,user_id,update_date,count_borrower
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -25,7 +26,7 @@
   <insert id="insert" parameterType="com.rongdu.cashloan.cl.domain.SjAccWithCheck">
     insert into sj_acc_withcheck (id, date, unit_price, 
       amt)
-    values (#{id,jdbcType=BIGINT}, #{date,jdbcType=TIMESTAMP}, #{unit_price,jdbcType=DECIMAL},
+    values (#{id,jdbcType=BIGINT}, #{date,jdbcType=DATE}, #{unit_price,jdbcType=DECIMAL},
       #{amt,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.rongdu.cashloan.cl.domain.SjAccWithCheck">
@@ -49,7 +50,7 @@
         #{id,jdbcType=BIGINT},
       </if>
       <if test="date != null">
-        #{date,jdbcType=TIMESTAMP},
+        #{date,jdbcType=DATE},
       </if>
       <if test="unit_price != null">
         #{unit_price,jdbcType=DECIMAL},
@@ -63,7 +64,7 @@
     update sj_acc_withcheck
     <set>
       <if test="date != null">
-        date = #{date,jdbcType=TIMESTAMP},
+        date = #{date,jdbcType=DATE},
       </if>
       <if test="unit_price != null">
         unit_price = #{unit_price,jdbcType=DECIMAL},
@@ -76,18 +77,32 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.rongdu.cashloan.cl.domain.SjAccWithCheck">
     update sj_acc_withcheck
-    set date = #{date,jdbcType=TIMESTAMP},
+    set date = #{date,jdbcType=DATE},
       unit_price = #{unit_price,jdbcType=DECIMAL},
       amt = #{amt,jdbcType=DECIMAL}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
   <insert id="insertBatch" parameterType="java.util.List">
-    insert into sj_acc_withcheck (id, date, unit_price, amt,user_id,update_date)
+    insert into sj_acc_withcheck (id, date, unit_price, amt,user_id,update_date,count_borrower)
     values
     <foreach collection="list" item="item" index="index" separator=",">
-      (#{item.id,jdbcType=BIGINT}, #{item.date,jdbcType=TIMESTAMP}, #{item.unit_price,jdbcType=DECIMAL},
-      #{item.amt,jdbcType=DECIMAL}, #{item.user_id,jdbcType=BIGINT},#{item.update_date,jdbcType=TIMESTAMP})
+      (#{item.id,jdbcType=BIGINT}, #{item.date,jdbcType=DATE}, #{item.unit_price,jdbcType=DECIMAL},
+      #{item.amt,jdbcType=DECIMAL}, #{item.user_id,jdbcType=BIGINT},#{item.update_date,jdbcType=TIMESTAMP},
+      #{item.count_borrower,jdbcType=BIGINT})
     </foreach>
   </insert>
+
+  <select id="listSjAccWithCheckInfos" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sj_acc_withcheck
+    where user_id = #{userId,jdbcType=BIGINT}
+    <if test="sDate != null">
+      and date_format(date, '%Y-%m-%d') &gt;= #{sDate}
+    </if>
+    <if test="eDate != null">
+      and date_format(date, '%Y-%m-%d') &lt;= #{eDate}
+    </if>
+  </select>
 </mapper>

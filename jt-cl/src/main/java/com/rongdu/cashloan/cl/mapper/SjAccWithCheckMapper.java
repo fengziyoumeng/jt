@@ -4,6 +4,7 @@ import com.rongdu.cashloan.cl.domain.SjAccWithCheck;
 import com.rongdu.cashloan.core.common.mapper.RDBatisDao;
 
 import java.util.List;
+import java.util.Map;
 
 @RDBatisDao
 public interface SjAccWithCheckMapper {
@@ -44,4 +45,6 @@ public interface SjAccWithCheckMapper {
     int updateByPrimaryKey(SjAccWithCheck record);
 
     int insertBatch(List<SjAccWithCheck> sjAccWithCheckList);
+
+    List<SjAccWithCheck> listSjAccWithCheckInfos(Map<String,Object> map);
 }
