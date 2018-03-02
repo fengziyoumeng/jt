@@ -48,10 +48,12 @@ public class SjAccountWithCheckServiceImpl implements SjAccWithCheckService {
             if(merList!=null && merList.size()>0){
                 for(Map<String, Object> map : merList){
                     SjAccWithCheck sjAccWithCheck = new SjAccWithCheck();
-                    Long countMan = (Long) map.get("merchant_count");
-                    sjAccWithCheck.setAmt(new BigDecimal(countMan*6));
+                    BigDecimal countMan = new BigDecimal((Long) map.get("merchant_count"));
+                    BigDecimal price = (BigDecimal)map.get("price");
+                    BigDecimal tolPrice = countMan.multiply(price);
+                    sjAccWithCheck.setAmt(tolPrice);
                     sjAccWithCheck.setUser_id((Long)map.get("merchant_id"));
-                    sjAccWithCheck.setUnit_price(new BigDecimal(6));
+                    sjAccWithCheck.setUnit_price(price);
                     sjAccWithCheck.setDate(dateFormat.parse(addTime));
                     sjAccWithCheck.setUpdate_date(new Date());
                     sjAccWithCheckList.add(sjAccWithCheck);
