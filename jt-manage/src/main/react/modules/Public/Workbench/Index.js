@@ -67,7 +67,7 @@ export default React.createClass({
                     <h2 className="navLine-title">信息预览</h2>
                     <div className='blk-top'>
                         <div className='blk-top-item'>
-                            <div className='blk-title'>余额</div>
+                            <div className='blk-title'>余额（元）</div>
                             <div className='blk-number'><a href="http://www.baidu.com">{data.balance}</a></div>
                         </div>
                         <div className='blk-top-item'>

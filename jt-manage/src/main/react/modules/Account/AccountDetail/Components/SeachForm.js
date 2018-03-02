@@ -17,7 +17,6 @@ let SeachForm = React.createClass({
         beginTime = dateString[0];
         endTime = dateString[1];
         var json = {beginTime:beginTime,endTime:endTime};
-        console.log(json);
         this.props.passParams({
             searchParams: JSON.stringify(json),
             pageSize: 10,

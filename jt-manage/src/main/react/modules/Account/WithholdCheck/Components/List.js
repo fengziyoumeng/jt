@@ -4,9 +4,6 @@ import {
     Modal,
     Popover
 } from 'antd';
-import Lookdetails from './Lookdetails'
-import AddFlowInfo from './AddFlowInfo'
-import AssignPermissions from './AssignPermissions'
 var confirm = Modal.confirm;
 export default React.createClass({
     getInitialState() {
@@ -106,40 +103,42 @@ export default React.createClass({
         this.setState({
             pagination: pager,
         });
-        /*console("翻页查询参数>>>>"+this.state.params);
-        this.fetch({
-            pageSize: pagination.pageSize,
-            current: pagination.current,
-            params:this.state.params
-        });*/
     },
-    /*fetch(params = {
-        pageSize: 10,
-        current: 1
-    }) {
-        this.setState({
-            loading: true
-        });
+    fetch(params = {pageSize: 10,
+        current: 1}) {
         Utils.ajaxData({
-            url: '/act/flowControl/getInfoManage.htm',
-            data: params,
+            url: '/modules/manage/system/user/find.htm',
+            method: 'get',
             callback: (result) => {
-                console.log(result)
-                // console.info("=======>"+JSON.stringify(result.data));
-                const pagination = this.state.pagination;
-                pagination.total = result.totalCount;
-                if (!pagination.current) {
-                    pagination.current = 1
-                };
+                console.log("---："+result.sysUser.id);
                 this.setState({
-                    loading: false,
-                    data: result.data,
-                    pagination,
+                    record: result.sysUser.id
                 });
-                this.clearList();
+                params.userId = this.state.record;
+                Utils.ajaxData({
+                    url: '/acc/withCheck/list.htm',
+                    method: "post",
+                    data: params,
+                    callback: (result) => {
+                        console.log("-12-："+this.state.record);
+                        const pagination = this.state.pagination;
+                        pagination.current = params.current;
+                        pagination.pageSize = params.pageSize;
+                        pagination.total = result.page.total;
+                        pagination.showTotal = () => `总共 ${result.page.total} 条`;
+                        if (!pagination.current) {
+                            pagination.current = 1
+                        }
+                        this.setState({
+                            loading: false,
+                            data: result.data,
+                            pagination
+                        });
+                    }
+                });
             }
         });
-    },*/
+    },
     clearList() {
         this.setState({
             selectedRowKeys: [],
@@ -185,77 +184,28 @@ export default React.createClass({
         const hasSelected = selectedRowKeys.length > 0;
         var columns = [{
             title: '日期',
-            dataIndex: 'pname'
+            dataIndex: 'date'
         }, {
             title: '用户数',
-            dataIndex: "minLimit",
-            render: function (value,record) {
-                 const maxcount = record.maxLimit;
-                 if(maxcount!=undefined && maxcount!="" && maxcount!=null ){
-                    return value + "~"+maxcount;
-                 }else {
-                     return value;
-                 }
-            }
+            dataIndex: "count_borrower"
         }, {
-            title: 'CPA单价',
-            dataIndex: "ploanMinTime",
-            render: function (value,record) {
-                var tempTimes = "";
-                const maxLoanTime = record.ploanMaxTime;
-                if(maxLoanTime!=undefined && maxLoanTime!="" && maxLoanTime!=null && maxLoanTime!=0 ){
-                    tempTimes = value + "~"+maxLoanTime;
-                }else {
-                    tempTimes =  value;
-                }
-                if(record.ploanTimeType == 1){
-                    return tempTimes+"小时";
-                }else if(record.ploanTimeType == 2){
-                    return tempTimes+"天";
-                }else if(record.ploanTimeType == 3){
-                    return tempTimes+"分钟";
-                }else{
-                    return tempTimes;
-                }
-            }
+            title: 'CPA单价（元）',
+            dataIndex: "unit_price"
         },  {
-            title: '扣款金额',
-            dataIndex: "id"
+            title: '扣款金额（元）',
+            dataIndex: "amt"
         }, {
             title: '更新时间',
-            dataIndex: "premark",
-            render: (text, record) => {
-                if (text&&text.length >= 8) {
-                    return <Popover content={text} overlayStyle={{ width: "200px" }}>
-                        <span>{text.substring(0, 8)}...</span>
-                    </Popover>
-                } else {
-                    return <span>{text}</span>
-                }
-            }
-        },{
-            title: '操作',
-            dataIndex: "pcode"
+            dataIndex: "update_date"
         }];
         var state = this.state;
         return (
             <div className="block-panel">
-                <div className="actionBtns" style={{ marginBottom: 16 }}>
-                    <button className="ant-btn" onClick={this.showModal.bind(this, '新增', null, true) }>
-                        新增
-                    </button>
-                </div>
                 <Table columns={columns} rowKey={this.rowKey}  size="middle"  params ={this.props.params}
                        dataSource={this.state.data}
                        pagination={this.state.pagination}
                        loading={this.state.loading}
                        onChange={this.handleTableChange}  />
-                <AddFlowInfo ref="AddFlowInfo"  visible={state.visible}    title={state.title} hideModal={me.hideModal} record={state.record}
-                             canEdit={state.canEdit}/>
-                <Lookdetails ref="Lookdetails" visible={state.visibleLook} title={state.title} hideModal={me.hideModal} record={state.rowRecord}
-                             canEdit={state.canEdit} detail={state.detail} />
-                <AssignPermissions ref="AssignPermissions"  visible={state.assignVisible}    title={state.title} hideModal={me.hideModal} selectRecord={state.record}
-                                   canEdit={state.canEdit}/>
             </div>
         );
     }

@@ -168,6 +168,13 @@
         where merchant_id = #{userId}
     </select>
 
+    <select id="countBorrowersByGroup" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
+        select COUNT(merchant_id) as merchant_count,merchant_id,price
+        from sj_merchant_borrower
+        where date_format(add_time, '%Y-%m-%d') = #{addTime}
+        group by merchant_id
+    </select>
+
     <select id="queryUserById" resultMap="BaseResultMap">
         select borrower_id
         from sj_merchant_borrower
