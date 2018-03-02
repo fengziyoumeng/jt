@@ -24,10 +24,10 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.rongdu.cashloan.cl.domain.SjAccWithCheck">
-    insert into sj_acc_withcheck (id, date, unit_price, 
-      amt)
-    values (#{id,jdbcType=BIGINT}, #{date,jdbcType=DATE}, #{unit_price,jdbcType=DECIMAL},
-      #{amt,jdbcType=DECIMAL})
+    insert into sj_acc_withcheck (date, unit_price, amt,user_id,update_date,count_borrower)
+    values (#{date,jdbcType=DATE}, #{unit_price,jdbcType=DECIMAL},
+      #{amt,jdbcType=DECIMAL}, #{user_id,jdbcType=BIGINT},#{update_date,jdbcType=TIMESTAMP},
+      #{count_borrower,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.rongdu.cashloan.cl.domain.SjAccWithCheck">
     insert into sj_acc_withcheck

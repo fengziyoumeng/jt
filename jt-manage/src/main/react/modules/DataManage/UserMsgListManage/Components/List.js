@@ -143,7 +143,14 @@ export default React.createClass({
             dataIndex: 'authMobile'
         }, {
             title: '运营商',
-            dataIndex: "operatorStatus",
+            dataIndex: "operator",
+            render(value){
+                if(!value){
+                    return "未知";
+                }else {
+                    return value;
+                }
+            }
         }, {
             title: '姓名',
             dataIndex: "realName",

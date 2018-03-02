@@ -66,6 +66,14 @@
         insert into sj_merchant_borrower(merchant_id,borrower_id,audit,is_detail,add_time,price)values(#{merchantId,jdbcType=BIGINT},#{borrowerId,jdbcType=BIGINT},#{audit,jdbcType=INTEGER},#{isDetail,jdbcType=INTEGER},#{addTime,jdbcType=TIMESTAMP},#{price,jdbcType=DECIMAL})
     </insert>
 
+    <insert id="batchInsert" parameterType="list">
+        insert into sj_merchant_borrower(merchant_id,borrower_id,audit,is_detail,add_time,price)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+          (#{item.merchantId,jdbcType=BIGINT},#{item.borrowerId,jdbcType=BIGINT},#{item.audit,jdbcType=INTEGER},#{item.isDetail,jdbcType=INTEGER},#{item.addTime,jdbcType=TIMESTAMP},#{item.price,jdbcType=DECIMAL})
+        </foreach>
+    </insert>
+
     
     <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MerchantBorrower">
         update sj_merchant_borrower set 

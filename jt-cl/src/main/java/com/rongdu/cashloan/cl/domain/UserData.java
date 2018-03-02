@@ -28,8 +28,18 @@ public class UserData {
     private BigDecimal price;
     private Integer isDetail;
     private Integer audit;
+    private String operator;
 
     private Date addTime;
+
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
 
     public Long getId() {
         return id;

@@ -47,7 +47,6 @@ var MessageManage = require('../../PlatFormManage/MessageManage/index'); //消�
 /*数据管理*/
 var UserMsgListManage = require('../../DataManage/UserMsgListManage/index'); //用户数据列表
 var UserTypeManage = require('../../DataManage/UserTypeManage/index'); //设置用户类型
-var PriceManage = require('../../DataManage/PriceManage/index'); //设置用户类型
 
 var WithholdCheck = require('../../Account/WithholdCheck/index');//扣款账单
 var AccountDetail = require('../../Account/AccountDetail/index');//账户明细
@@ -102,6 +101,5 @@ module.exports = {
   UserTypeManage,
   MessageManage,
   WithholdCheck,
-  AccountDetail,
-  PriceManage
+  AccountDetail
 }

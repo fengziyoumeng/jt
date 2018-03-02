@@ -1,5 +1,6 @@
 package com.rongdu.cashloan.cl.mapper;
 
+import com.rongdu.cashloan.cl.domain.UserData;
 import com.rongdu.cashloan.core.common.mapper.BaseMapper;
 import com.rongdu.cashloan.core.common.mapper.RDBatisDao;
 import com.rongdu.cashloan.cl.domain.MerchantBorrower;
@@ -20,8 +21,9 @@ import java.util.Map;
 @RDBatisDao
 public interface MerchantBorrowerMapper extends BaseMapper<MerchantBorrower, Long> {
 
+    void batchInsert(List<MerchantBorrower> params);
 
-    List<MerchantBorrower> getUserDataList(Map<String, Object> params);
+    List<UserData> getUserDataList(Map<String, Object> params);
 
     void setAuditStatus(Map<String, Object> params);
 

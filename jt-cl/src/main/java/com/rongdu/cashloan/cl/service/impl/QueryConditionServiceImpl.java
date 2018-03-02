@@ -3,8 +3,10 @@ package com.rongdu.cashloan.cl.service.impl;
 import javax.annotation.Resource;
 
 import com.rongdu.cashloan.cl.domain.MerchantBorrower;
+import com.rongdu.cashloan.cl.domain.SjAccWithCheck;
 import com.rongdu.cashloan.cl.mapper.MerchantBorrowerMapper;
 import com.rongdu.cashloan.cl.mapper.QueryConditionMapper;
+import com.rongdu.cashloan.cl.mapper.SjAccWithCheckMapper;
 import com.rongdu.cashloan.core.common.exception.ServiceException;
 import com.rongdu.cashloan.core.common.exception.SimpleMessageException;
 import com.rongdu.cashloan.core.common.util.JsonUtil;
@@ -47,6 +49,8 @@ public class QueryConditionServiceImpl extends BaseServiceImpl<QueryCondition, L
     private MerchantBorrowerMapper merchantBorrowerMapper;
     @Resource
     private SysDictDetailService sysDictDetailService;
+    @Resource
+    private SjAccWithCheckMapper sjAccWithCheckMapper;
 
 	@Override
 	public BaseMapper<QueryCondition, Long> getMapper() {
@@ -132,12 +136,25 @@ public class QueryConditionServiceImpl extends BaseServiceImpl<QueryCondition, L
 		SysDictDetail detail = sysDictDetailService.findDetail("DATA_PRICE", "USER_DATA_PRICE");
 
 		//把处理好的数据插入到关系表
+
 		for (MerchantBorrower fetchuser : fetchUserList) {
 			fetchuser.setAddTime(new Date());
 			fetchuser.setMerchantId(userId);
 			fetchuser.setPrice(new BigDecimal(detail.getItemValue()));
 			fetchuser.setAudit(0);
-			merchantBorrowerMapper.save(fetchuser);
 		}
+		merchantBorrowerMapper.batchInsert(fetchUserList);
+		//给账单插入对应数据
+		BigDecimal unitPrice = new BigDecimal(detail.getItemValue());
+		BigDecimal count = new BigDecimal(fetchUserList.size());
+		BigDecimal amount = unitPrice.multiply(count);
+		SjAccWithCheck sjAccWithCheck = new SjAccWithCheck();
+		sjAccWithCheck.setUser_id(userId);
+		sjAccWithCheck.setCount_borrower(Long.valueOf(fetchUserList.size()));
+		sjAccWithCheck.setDate(new Date());
+		sjAccWithCheck.setUnit_price(unitPrice);
+		sjAccWithCheck.setAmt(amount);
+		sjAccWithCheck.setUpdate_date(new Date());
+		sjAccWithCheckMapper.insert(sjAccWithCheck);
 	}
 }

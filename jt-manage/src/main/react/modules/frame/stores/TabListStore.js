@@ -109,8 +109,7 @@ export default Reflux.createStore({
 					'UserTypeManage',
 					'MessageManage',
 					'WithholdCheck',
-					'AccountDetail',
-					'PriceManage'
+					'AccountDetail'
 			];
 
 			var routeNames3 = [

@@ -1,5 +1,7 @@
 package com.rongdu.cashloan.cl.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.rongdu.cashloan.cl.mapper.MerchantBorrowerMapper;
@@ -10,11 +12,17 @@ import com.rongdu.cashloan.core.common.util.DateUtil;
 import com.rongdu.cashloan.cl.domain.MerchantBorrower;
 import com.rongdu.cashloan.cl.domain.UserData;
 import com.rongdu.cashloan.cl.service.MerchantBorrowerService;
+import com.rongdu.cashloan.core.common.util.JsonUtil;
+import com.rongdu.cashloan.core.common.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -49,24 +57,37 @@ public class MerchantBorrowerServiceImpl extends BaseServiceImpl<UserData, Long>
 	}
 
 	@Override
-	public Page<MerchantBorrower> getUserDataList(Map<String,Object> params) {
-		List<MerchantBorrower> merchantBorrower = null;
+	public Page<UserData> getUserDataList(Map<String,Object> params) {
+		List<UserData> userData = null;
 		try{
-
 			if(params.get("end")!=null && params.get("start")!=null){
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				Date end = format.parse(params.get("end").toString());
 				Date dayEndTime = DateUtil.getDayEndTime(end);
-
 				params.put("end",format.format(dayEndTime));
 			}
-
 			PageHelper.startPage((int)params.get("current"), (int)params.get("pageSize"));
-			merchantBorrower = merchantBorrowerMapper.getUserDataList(params);
+			userData = merchantBorrowerMapper.getUserDataList(params);
 		}catch (Exception e){
 			logger.info("查询失败",e);
 		}
-		return (Page<MerchantBorrower>)merchantBorrower;
+		try{
+			for (UserData userDatum : userData) {
+				String authMobile = userDatum.getAuthMobile();
+				if(StringUtil.isNotBlank(authMobile)){
+					String urlContent = getURLContent(authMobile);
+					String jsonString = urlContent.replace("__GetZoneResult_ = ","").replaceAll(" ","");
+					JSONObject jsonObject = JSON.parseObject(jsonString);
+					if(jsonObject.get("carrier")!=null){
+						String catName = jsonObject.get("carrier").toString();
+						userDatum.setOperator(catName);
+					}
+				}
+			}
+		}catch (Exception e){
+			logger.info("运营商查询失败",e);
+		}
+		return (Page<UserData>)userData;
 	}
 
 	@Override
@@ -80,5 +101,21 @@ public class MerchantBorrowerServiceImpl extends BaseServiceImpl<UserData, Long>
 		}catch (Exception e){
 			logger.info("状态设置失败",e);
 		}
+	}
+	public static String getURLContent(String params) throws Exception {
+		URL url = new URL("https://tcc.taobao.com/cc/json/mobile_tel_segment.htm?tel="+params);
+		HttpURLConnection httpConn = (HttpURLConnection)url.openConnection();
+		httpConn.setRequestMethod("GET");
+		httpConn.connect();
+
+		BufferedReader reader = new BufferedReader(new InputStreamReader(httpConn.getInputStream()));
+		String line;
+		StringBuffer buffer = new StringBuffer();
+		while ((line = reader.readLine()) != null) {
+			buffer.append(line);
+		}
+		reader.close();
+		httpConn.disconnect();
+		return buffer.toString();
 	}
 }
