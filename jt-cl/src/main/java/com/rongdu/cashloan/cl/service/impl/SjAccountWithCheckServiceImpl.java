@@ -8,6 +8,7 @@ import com.rongdu.cashloan.cl.domain.SjAccWithCheck;
 import com.rongdu.cashloan.cl.mapper.AccountDetailInfoMapper;
 import com.rongdu.cashloan.cl.mapper.AccountInfoMapper;
 import com.rongdu.cashloan.cl.mapper.MerchantBorrowerMapper;
+import com.rongdu.cashloan.cl.mapper.SjAccWithCheckMapper;
 import com.rongdu.cashloan.cl.service.SjAccWithCheckService;
 import com.rongdu.cashloan.core.common.context.Constant;
 import com.rongdu.cashloan.core.common.exception.ServiceException;
@@ -16,11 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service("sjAccWithCheckService")
 public class SjAccountWithCheckServiceImpl implements SjAccWithCheckService {
@@ -29,6 +28,9 @@ public class SjAccountWithCheckServiceImpl implements SjAccWithCheckService {
 
     @Resource
     private MerchantBorrowerMapper merchantBorrowerMapper;
+
+    @Resource
+    private SjAccWithCheckMapper sjAccWithCheckMapper;
 
     @Override
     public boolean saveWithholdCheck() throws Exception {
@@ -39,15 +41,26 @@ public class SjAccountWithCheckServiceImpl implements SjAccWithCheckService {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String addTime = dateFormat.format(calendar.getTime());
         params.put("addTime",addTime);
-        //统计得到前一天所有商户id对应的各自用户数
-        List<Map<String, Object>> merList = merchantBorrowerMapper.countBorrowersByGroup(params);
-        if(merList!=null && merList.size()>0){
-            for(Map<String, Object> map : merList){
-                SjAccWithCheck sjAccWithCheck = new SjAccWithCheck();
+        try{
+            //统计得到前一天所有商户id对应的各自用户数,并计算出扣款金额
+            List<Map<String, Object>> merList = merchantBorrowerMapper.countBorrowersByGroup(params);
+            List<SjAccWithCheck> sjAccWithCheckList = new ArrayList<SjAccWithCheck>();
+            if(merList!=null && merList.size()>0){
+                for(Map<String, Object> map : merList){
+                    SjAccWithCheck sjAccWithCheck = new SjAccWithCheck();
+                    Long countMan = (Long) map.get("merchant_count");
+                    sjAccWithCheck.setAmt(new BigDecimal(countMan*6));
+                    sjAccWithCheck.setUser_id((Long)map.get("merchant_id"));
+                    sjAccWithCheck.setUnit_price(new BigDecimal(6));
+                    sjAccWithCheck.setDate(dateFormat.parse(addTime));
+                    sjAccWithCheck.setUpdate_date(new Date());
+                    sjAccWithCheckList.add(sjAccWithCheck);
+                }
+                sjAccWithCheckMapper.insertBatch(sjAccWithCheckList);
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
-
-        //计算出扣款金额
-        return false;
+        return true;
     }
 }

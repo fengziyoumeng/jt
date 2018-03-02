@@ -1,7 +1,11 @@
 package com.rongdu.cashloan.cl.mapper;
 
 import com.rongdu.cashloan.cl.domain.SjAccWithCheck;
+import com.rongdu.cashloan.core.common.mapper.RDBatisDao;
 
+import java.util.List;
+
+@RDBatisDao
 public interface SjAccWithCheckMapper {
     /**
      *
@@ -38,4 +42,6 @@ public interface SjAccWithCheckMapper {
      * @mbggenerated 2018-03-01
      */
     int updateByPrimaryKey(SjAccWithCheck record);
+
+    int insertBatch(List<SjAccWithCheck> sjAccWithCheckList);
 }

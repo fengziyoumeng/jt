@@ -6,14 +6,24 @@ import java.util.Date;
 
 public class SjAccWithCheck implements Serializable {
     /**
-     * 
+     *
      */
-    private Integer id;
+    private Long id;
+
+    /**
+     *
+     */
+    private Long user_id;
 
     /**
      * 扣款日期
      */
     private Date date;
+
+    /**
+     * 扣款日期
+     */
+    private Date update_date;
 
     /**
      * CPA单价
@@ -29,22 +39,6 @@ public class SjAccWithCheck implements Serializable {
      * sj_acc_withcheck
      */
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 
-     * @return id 
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * 
-     * @param id 
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     /**
      * 扣款日期
@@ -94,59 +88,65 @@ public class SjAccWithCheck implements Serializable {
         this.amt = amt;
     }
 
-    /**
-     *
-     * @mbggenerated 2018-03-01
-     */
-    @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        SjAccWithCheck other = (SjAccWithCheck) that;
-        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getDate() == null ? other.getDate() == null : this.getDate().equals(other.getDate()))
-            && (this.getUnit_price() == null ? other.getUnit_price() == null : this.getUnit_price().equals(other.getUnit_price()))
-            && (this.getAmt() == null ? other.getAmt() == null : this.getAmt().equals(other.getAmt()));
+    public Long getId() {
+        return id;
     }
 
-    /**
-     *
-     * @mbggenerated 2018-03-01
-     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(Long user_id) {
+        this.user_id = user_id;
+    }
+
+    public Date getUpdate_date() {
+        return update_date;
+    }
+
+    public void setUpdate_date(Date update_date) {
+        this.update_date = update_date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SjAccWithCheck that = (SjAccWithCheck) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (user_id != null ? !user_id.equals(that.user_id) : that.user_id != null) return false;
+        if (date != null ? !date.equals(that.date) : that.date != null) return false;
+        if (update_date != null ? !update_date.equals(that.update_date) : that.update_date != null) return false;
+        if (unit_price != null ? !unit_price.equals(that.unit_price) : that.unit_price != null) return false;
+        return amt != null ? amt.equals(that.amt) : that.amt == null;
+    }
+
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getDate() == null) ? 0 : getDate().hashCode());
-        result = prime * result + ((getUnit_price() == null) ? 0 : getUnit_price().hashCode());
-        result = prime * result + ((getAmt() == null) ? 0 : getAmt().hashCode());
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (user_id != null ? user_id.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (update_date != null ? update_date.hashCode() : 0);
+        result = 31 * result + (unit_price != null ? unit_price.hashCode() : 0);
+        result = 31 * result + (amt != null ? amt.hashCode() : 0);
         return result;
     }
 
-    /**
-     *
-     * @mbggenerated 2018-03-01
-     */
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", date=").append(date);
-        sb.append(", unit_price=").append(unit_price);
-        sb.append(", amt=").append(amt);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+        return "SjAccWithCheck{" +
+                "id=" + id +
+                ", user_id=" + user_id +
+                ", date=" + date +
+                ", update_date=" + update_date +
+                ", unit_price=" + unit_price +
+                ", amt=" + amt +
+                '}';
     }
 }

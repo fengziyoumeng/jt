@@ -2,28 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rongdu.cashloan.cl.mapper.SjAccWithCheckMapper">
   <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.SjAccWithCheck">
-    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="id" jdbcType="BIGINT" property="id" />
     <result column="date" jdbcType="TIMESTAMP" property="date" />
     <result column="unit_price" jdbcType="DECIMAL" property="unit_price" />
     <result column="amt" jdbcType="DECIMAL" property="amt" />
+    <result column="user_id" jdbcType="BIGINT" property="date" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="date" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, date, unit_price, amt
+    id, date, unit_price, amt,user_id,update_date
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from sj_acc_withcheck
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from sj_acc_withcheck
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.rongdu.cashloan.cl.domain.SjAccWithCheck">
     insert into sj_acc_withcheck (id, date, unit_price, 
       amt)
-    values (#{id,jdbcType=INTEGER}, #{date,jdbcType=TIMESTAMP}, #{unit_price,jdbcType=DECIMAL}, 
+    values (#{id,jdbcType=BIGINT}, #{date,jdbcType=TIMESTAMP}, #{unit_price,jdbcType=DECIMAL},
       #{amt,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.rongdu.cashloan.cl.domain.SjAccWithCheck">
@@ -44,7 +46,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=BIGINT},
       </if>
       <if test="date != null">
         #{date,jdbcType=TIMESTAMP},
@@ -70,13 +72,22 @@
         amt = #{amt,jdbcType=DECIMAL},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.rongdu.cashloan.cl.domain.SjAccWithCheck">
     update sj_acc_withcheck
     set date = #{date,jdbcType=TIMESTAMP},
       unit_price = #{unit_price,jdbcType=DECIMAL},
       amt = #{amt,jdbcType=DECIMAL}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into sj_acc_withcheck (id, date, unit_price, amt,user_id,update_date)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.id,jdbcType=BIGINT}, #{item.date,jdbcType=TIMESTAMP}, #{item.unit_price,jdbcType=DECIMAL},
+      #{item.amt,jdbcType=DECIMAL}, #{item.user_id,jdbcType=BIGINT},#{item.update_date,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
 </mapper>
