@@ -7,7 +7,7 @@
         <id column="id" jdbcType="BIGINT" property="id" />
         <result column="merchant_id" property="merchantId" jdbcType="BIGINT" />
         <result column="borrower_id" property="borrowerId" jdbcType="BIGINT" />
-        <result column="auth" property="auth" jdbcType="INTEGER" />
+        <result column="audit" property="audit" jdbcType="INTEGER" />
         <result column="is_detail" property="isDetail" jdbcType="INTEGER" />
     </resultMap>
     <resultMap id="userDataResultMap" type="com.rongdu.cashloan.cl.domain.UserData">
@@ -39,6 +39,7 @@
     <sql id="Base_Column_List">
         merchant_id,borrower_id,auth,is_detail,add_time
     </sql>
+
     <sql id="User_Data_List">
         id,user_id,borrower_id,card_id,card_type,real_name,sex,age,qq,weixin,auth_status,zhima_status,
         jingdong_status,operator_status,is_auth_pay,province_address,city_address,auth_mobile,zhima_score,
@@ -62,7 +63,7 @@
     
     
     <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MerchantBorrower">
-        insert into sj_merchant_borrower(merchant_id,borrower_id,auth,is_detail,add_time)values(#{merchantId,jdbcType=BIGINT},#{borrowerId,jdbcType=BIGINT},#{auth,jdbcType=INTEGER},#{isDetail,jdbcType=INTEGER},#{addTime,jdbcType=TIMESTAMP})
+        insert into sj_merchant_borrower(merchant_id,borrower_id,audit,is_detail,add_time,price)values(#{merchantId,jdbcType=BIGINT},#{borrowerId,jdbcType=BIGINT},#{audit,jdbcType=INTEGER},#{isDetail,jdbcType=INTEGER},#{addTime,jdbcType=TIMESTAMP},#{price,jdbcType=DECIMAL})
     </insert>
 
     

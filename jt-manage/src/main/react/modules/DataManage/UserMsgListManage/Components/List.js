@@ -172,7 +172,7 @@ export default React.createClass({
             title: '状态',
             dataIndex: "audit",
             render(value,record){
-                if(value==0){
+                if(value==0||value==null){
                     return "未审核"
                 }else if(value==1){
                     return <font color={"green"}>已通过</font>
@@ -187,8 +187,8 @@ export default React.createClass({
                 return <div style={{ textAlign: "left" }}>
                     <Dropdown  overlay={
                         <Menu onClick={me.handleMenuClick.bind(value,record)}>
-                            <Menu.Item key="1" disabled={record.audit==0?false:true}>审核通过</Menu.Item>
-                            <Menu.Item key="2" disabled={record.audit==0?false:true}>审核拒绝</Menu.Item>
+                            <Menu.Item key="1" disabled={record.audit!=0&&record.audit!=null?true:false}>审核通过</Menu.Item>
+                            <Menu.Item key="2" disabled={record.audit!=0&&record.audit!=null?true:false}>审核拒绝</Menu.Item>
                         </Menu>}>
                         <Button >
                             管理 <Icon type="down" />

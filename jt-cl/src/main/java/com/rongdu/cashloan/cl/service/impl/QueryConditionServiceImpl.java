@@ -5,9 +5,14 @@ import javax.annotation.Resource;
 import com.rongdu.cashloan.cl.domain.MerchantBorrower;
 import com.rongdu.cashloan.cl.mapper.MerchantBorrowerMapper;
 import com.rongdu.cashloan.cl.mapper.QueryConditionMapper;
+import com.rongdu.cashloan.core.common.exception.ServiceException;
+import com.rongdu.cashloan.core.common.exception.SimpleMessageException;
 import com.rongdu.cashloan.core.common.util.JsonUtil;
 import com.rongdu.cashloan.core.common.util.StringUtil;
 import com.rongdu.cashloan.cl.service.QueryConditionService;
+import com.rongdu.cashloan.system.domain.SysDictDetail;
+import com.rongdu.cashloan.system.serviceNoSharding.SysDictDetailService;
+import com.rongdu.cashloan.system.serviceNoSharding.SysDictService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,10 +21,8 @@ import com.rongdu.cashloan.core.common.mapper.BaseMapper;
 import com.rongdu.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.rongdu.cashloan.cl.domain.QueryCondition;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.util.*;
 
 
 /**
@@ -42,6 +45,8 @@ public class QueryConditionServiceImpl extends BaseServiceImpl<QueryCondition, L
     private QueryConditionMapper queryConditionMapper;
     @Resource
     private MerchantBorrowerMapper merchantBorrowerMapper;
+    @Resource
+    private SysDictDetailService sysDictDetailService;
 
 	@Override
 	public BaseMapper<QueryCondition, Long> getMapper() {
@@ -65,11 +70,18 @@ public class QueryConditionServiceImpl extends BaseServiceImpl<QueryCondition, L
 
 
 	@Override
-	public void saveOrUpdate(String data,Long userId) {
+	public void saveOrUpdate(String data,Long userId) throws Exception{
 		try{
 			if(StringUtil.isNotBlank(data)){
 				QueryCondition queryCondition = JsonUtil.parse(data,QueryCondition.class);
 				Map params = JsonUtil.parse(data,Map.class);
+				if(params.get("dataAmount")==null
+						||params.get("zmScoreMin")==null
+						||params.get("zmScoreMax")==null
+						||params.get("ageMin")==null
+						||params.get("ageMax")==null){
+					throw new SimpleMessageException("条件设置有误，请重新设置！");
+				}
 				recommend(params,userId);
 				if(queryCondition.getId()!=null){
 					queryCondition.setUpdateTime(new Date());
@@ -82,23 +94,50 @@ public class QueryConditionServiceImpl extends BaseServiceImpl<QueryCondition, L
 			}
 		}catch (Exception e){
 			logger.info("设置条件失败",e);
+			throw e;
 		}
 
 	}
 
-	public void recommend(Map<String,Object> condition,Long userId){
+	public void recommend(Map<String,Object> condition,Long userId) throws ServiceException {
 		//查询出当前用户拥有哪些用户的数据
-		List<MerchantBorrower> hasUserData = merchantBorrowerMapper.queryUserById(userId);
-		for (MerchantBorrower hasUserDatum : hasUserData) {
-			System.out.println(hasUserDatum.getBorrowerId());
-		}
-		System.out.println("-=======================-");
+		List<MerchantBorrower> hasUserDataList = merchantBorrowerMapper.queryUserById(userId);
+
 		//查询出所有符合条件的用户
-		List<MerchantBorrower> user = queryConditionMapper.queryUserByCondition(condition);
+		List<MerchantBorrower> fetchUserList = queryConditionMapper.queryUserByCondition(condition);
 
-		for (MerchantBorrower aLong : user) {
-			System.out.println(aLong.getBorrowerId());
+		//去除被重复推荐的用户
+		Iterator<MerchantBorrower> itFetchUser = fetchUserList.iterator();
+		while(itFetchUser.hasNext()){
+			Iterator<MerchantBorrower> itHasUser = hasUserDataList.iterator();
+			Long fetch = itFetchUser.next().getBorrowerId();
+			while(itHasUser.hasNext()){
+				Long hasUser = itHasUser.next().getBorrowerId();
+				if(fetch.equals(hasUser)){
+					itFetchUser.remove();
+				}
+			}
+		}
 
+		//截取用户要求的数量
+		if( Integer.parseInt(condition.get("dataAmount").toString().trim()) <= fetchUserList.size()){
+			fetchUserList = fetchUserList.subList(0, Integer.parseInt(condition.get("dataAmount").toString().trim()));
+		}else if(fetchUserList.size()!=0){
+			throw new RuntimeException("当前符合条件的数据只有"+fetchUserList.size()+"条，如果需要，请把需求数量改为"+fetchUserList.size());
+		}else {
+			throw new RuntimeException("抱歉，没有找到符合当前条件的数据，请重新更改条件后查询！");
+		}
+
+		//从数据字典获取当前数据单价
+		SysDictDetail detail = sysDictDetailService.findDetail("DATA_PRICE", "USER_DATA_PRICE");
+
+		//把处理好的数据插入到关系表
+		for (MerchantBorrower fetchuser : fetchUserList) {
+			fetchuser.setAddTime(new Date());
+			fetchuser.setMerchantId(userId);
+			fetchuser.setPrice(new BigDecimal(detail.getItemValue()));
+			fetchuser.setAudit(0);
+			merchantBorrowerMapper.save(fetchuser);
 		}
 	}
 }

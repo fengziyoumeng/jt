@@ -17,5 +17,5 @@ public interface QueryConditionService extends BaseService<QueryCondition, Long>
 
     QueryCondition getQueryCondition(Long userId);
 
-    void saveOrUpdate(String data,Long userId);
+    void saveOrUpdate(String data,Long userId) throws Exception;
 }

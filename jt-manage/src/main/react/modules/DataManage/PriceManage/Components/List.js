@@ -29,21 +29,7 @@ var List = React.createClass({
         this.fetch();
     },
     componentWillReceiveProps (nextProps) {
-        console.log("WillReceiveProps");
     },
-   /* shouldComponentUpdate (nextProps,nextState) {
-        console.log("shouldComponentUpdate");
-    },*/
-    componentWillUpdate (nextProps,nextState) {
-        console.log("WillUpdate");
-    },
-    componentDidUpdate (prevProps,prevState) {
-        console.log("DidUpdate");
-    },
-    componentWillUnmount () {
-        console.log("WillUnmount");
-    },
-
     fetch(params = {
         pageSize: 10,
         current: 1
@@ -84,7 +70,7 @@ var List = React.createClass({
                         callback: (result) => {
                             if (result.code == 200) {
                                 Modal.success({
-                                    title: "数据设置成功，请到用户数据列表中查看！",
+                                    title: "数据设置成功！",
                                 });
                             }else {
                                 Modal.error({
@@ -130,52 +116,23 @@ var List = React.createClass({
                     <Input  {...getFieldProps('id', {initialValue: ''})} type="hidden"/>
 
                     <div className="navLine-wrap-left">
-                        <h2>设置用户类型</h2>
+                        <h2>设置数据单价</h2>
                     </div>
-                        <Row {...formItemLay}>
-                            <div>
-                                <font color="green">提示：设置条件后将根据条件导入用户数据并执行扣费，请谨慎填写</font>
-                            </div>
-                        </Row>
-                        <Row {...formItemLay}>
-                            <Col span="6">
-                                <FormItem  {...formItemLayout} label="芝麻分：">
-                                    <Input disabled={!props.canEdit} {...getFieldProps('zmScoreMin')}  type="text"/>
-                                </FormItem>
-                            </Col>
-                            <Col span="6" pull={1}>
-                                <FormItem  {...formItemLayout} label="至 ">
-                                    <Input disabled={!props.canEdit}  {...getFieldProps('zmScoreMax')} type="text"/>
-                                </FormItem>
-                            </Col>
-                        </Row>
-
-                        <Row {...formItemLay}>
-                            <Col span="6">
-                                <FormItem  {...formItemLayout} label="年 龄：">
-                                    <Input disabled={!props.canEdit}  {...getFieldProps('ageMin')} type="text"/>
-                                </FormItem>
-                            </Col>
-                            <Col span="6" pull={1}>
-                                <FormItem  {...formItemLayout} label="至 ">
-                                    <Input disabled={!props.canEdit}  {...getFieldProps('ageMax')} type="text"/>
-                                </FormItem>
-                            </Col>
-                        </Row>
-
-                        <Row {...formItemLay}>
-                            <Col span="12" >
-                            </Col>
-                            <Col span="12" pull={7}>
-                                <FormItem {...itemLayout} label="需求数量：">
-                                    <Input disabled={!props.canEdit}  {...getFieldProps('dataAmount')} placeholder={"请填写你需要多少条数据"} type="text"/>
-                                </FormItem>
-                            </Col>
-                        </Row>
-                        <Row {...formItemLay}>
-                            <Button type="primary" htmlType="submit" onClick={this.handleOk}>&nbsp;提&nbsp;&nbsp;交&nbsp;</Button>
-                        </Row>
-
+                    <Row {...formItemLay}>
+                        <div>
+                            <font color="green">提示：成功设置后，商户获取的数据单价将改为当前值</font>
+                        </div>
+                    </Row>
+                    <Row {...formItemLay}>
+                        <Col span="6">
+                            <FormItem  {...formItemLayout} label="设置数据单价：">
+                                <Input disabled={!props.canEdit} {...getFieldProps('price')}  type="text"/>
+                            </FormItem>
+                        </Col>
+                    </Row>
+                    <Row {...formItemLay}>
+                        <Button type="primary" htmlType="submit" onClick={this.handleOk}>&nbsp;提&nbsp;&nbsp;交&nbsp;</Button>
+                    </Row>
                 </Form>
             </div>
         );

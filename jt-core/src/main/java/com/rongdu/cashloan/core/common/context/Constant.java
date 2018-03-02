@@ -59,6 +59,8 @@ public class Constant {
 	
 	public static final int PERM_CODE_VALUE = 403; // 无权限访问
 
+	public static final int MSG_CODE_VALUE = 402; // 无权限访问
+
 	//wangxb增加
 	public static final int BiZ_IN_BLACKLIST = 404; // 在黑名单中不予操作
 

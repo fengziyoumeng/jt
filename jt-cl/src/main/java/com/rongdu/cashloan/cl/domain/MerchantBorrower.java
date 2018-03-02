@@ -1,6 +1,7 @@
 package com.rongdu.cashloan.cl.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -31,7 +32,7 @@ import java.util.Date;
     /**
     * 是否审核0-未审核，1-已通过，2-未通过
     */
-    private Integer auth;
+    private Integer audit;
 
     /**
     * 是否有详细信息0-没有，1-有
@@ -40,6 +41,15 @@ import java.util.Date;
 
     private Date addTime;
 
+    private BigDecimal price;
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 
     public Long getId() {
         return id;
@@ -90,17 +100,17 @@ import java.util.Date;
     *
     * @return 是否审核0-未审核，1-已通过，2-未通过
     */
-    public Integer getAuth(){
-        return auth;
+    public Integer getAudit(){
+        return audit;
     }
 
     /**
     * 设置是否审核0-未审核，1-已通过，2-未通过
     * 
-    * @param auth 要设置的是否审核0-未审核，1-已通过，2-未通过
+    * @param audit 要设置的是否审核0-未审核，1-已通过，2-未通过
     */
-    public void setAuth(Integer auth){
-        this.auth = auth;
+    public void setAudit(Integer audit){
+        this.audit = audit;
     }
 
     /**
