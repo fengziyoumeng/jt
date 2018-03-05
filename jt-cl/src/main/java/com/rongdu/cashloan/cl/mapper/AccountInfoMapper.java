@@ -44,4 +44,6 @@ public interface AccountInfoMapper {
     int updateByPrimaryKey(AccountInfo record);
 
     AccountInfo getAccountInfo(Map<String,Object> map);
+
+    void updateByUserId(AccountInfo accountInfo);
 }

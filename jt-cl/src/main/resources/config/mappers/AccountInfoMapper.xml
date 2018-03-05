@@ -82,6 +82,20 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <update id="updateByUserId" parameterType="com.rongdu.cashloan.cl.domain.AccountInfo">
+    update sj_account
+    <set>
+      <if test="balance != null">
+        balance = balance - #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="update_time != null">
+        update_time = #{update_time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where user_id = #{user_id,jdbcType=BIGINT}
+  </update>
+
   <update id="updateByPrimaryKey" parameterType="com.rongdu.cashloan.cl.domain.AccountInfo">
     update sj_account
     set user_id = #{user_id,jdbcType=BIGINT},

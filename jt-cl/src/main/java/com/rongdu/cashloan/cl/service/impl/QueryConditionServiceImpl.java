@@ -2,11 +2,8 @@ package com.rongdu.cashloan.cl.service.impl;
 
 import javax.annotation.Resource;
 
-import com.rongdu.cashloan.cl.domain.MerchantBorrower;
-import com.rongdu.cashloan.cl.domain.SjAccWithCheck;
-import com.rongdu.cashloan.cl.mapper.MerchantBorrowerMapper;
-import com.rongdu.cashloan.cl.mapper.QueryConditionMapper;
-import com.rongdu.cashloan.cl.mapper.SjAccWithCheckMapper;
+import com.rongdu.cashloan.cl.domain.*;
+import com.rongdu.cashloan.cl.mapper.*;
 import com.rongdu.cashloan.core.common.exception.ServiceException;
 import com.rongdu.cashloan.core.common.exception.SimpleMessageException;
 import com.rongdu.cashloan.core.common.util.JsonUtil;
@@ -21,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import com.rongdu.cashloan.core.common.mapper.BaseMapper;
 import com.rongdu.cashloan.core.common.service.impl.BaseServiceImpl;
-import com.rongdu.cashloan.cl.domain.QueryCondition;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -51,6 +47,10 @@ public class QueryConditionServiceImpl extends BaseServiceImpl<QueryCondition, L
     private SysDictDetailService sysDictDetailService;
     @Resource
     private SjAccWithCheckMapper sjAccWithCheckMapper;
+    @Resource
+    private AccountInfoMapper accountInfoMapper;
+    @Resource
+    private AccountDetailInfoMapper accountDetailInfoMapper;
 
 	@Override
 	public BaseMapper<QueryCondition, Long> getMapper() {
@@ -155,6 +155,32 @@ public class QueryConditionServiceImpl extends BaseServiceImpl<QueryCondition, L
 		sjAccWithCheck.setUnit_price(unitPrice);
 		sjAccWithCheck.setAmt(amount);
 		sjAccWithCheck.setUpdate_date(new Date());
-		sjAccWithCheckMapper.insert(sjAccWithCheck);
+		//先查询当前用户在当天是否有记录
+		HashMap<Object, Object> params = new HashMap<>();
+		params.put("userId",userId);
+		Integer num = sjAccWithCheckMapper.queryTodayData(params);
+		if(num>0){
+			sjAccWithCheckMapper.update(sjAccWithCheck);
+		}else{
+			sjAccWithCheckMapper.insert(sjAccWithCheck);
+		}
+
+        //对账户进行扣款操作
+        AccountInfo accountInfo = new AccountInfo();
+		//balance 在这里设置的是当前花费的金额,不是余额,用于在sql中减去当前花费
+		accountInfo.setBalance(amount);
+		accountInfo.setUpdate_time(new Date());
+		accountInfo.setUser_id(userId);
+        accountInfoMapper.updateByUserId(accountInfo);
+        //添加一条账户流水
+        AccountDetailInfo accountDetailInfo = new AccountDetailInfo();
+        accountDetailInfo.setAmt(amount);
+        accountDetailInfo.setAmt_type(2);
+        accountDetailInfo.setCreate_time(new Date());
+        accountDetailInfo.setUpdate_time(new Date());
+        accountDetailInfo.setHand_person("系统");
+        accountDetailInfo.setUser_id(userId);
+        accountDetailInfo.setRemark("添加用户后扣款");
+        accountDetailInfoMapper.insert(accountDetailInfo);
 	}
 }

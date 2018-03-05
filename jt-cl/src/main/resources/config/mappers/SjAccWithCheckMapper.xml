@@ -23,12 +23,14 @@
     delete from sj_acc_withcheck
     where id = #{id,jdbcType=BIGINT}
   </delete>
+
   <insert id="insert" parameterType="com.rongdu.cashloan.cl.domain.SjAccWithCheck">
     insert into sj_acc_withcheck (date, unit_price, amt,user_id,update_date,count_borrower)
     values (#{date,jdbcType=DATE}, #{unit_price,jdbcType=DECIMAL},
       #{amt,jdbcType=DECIMAL}, #{user_id,jdbcType=BIGINT},#{update_date,jdbcType=TIMESTAMP},
       #{count_borrower,jdbcType=BIGINT})
   </insert>
+
   <insert id="insertSelective" parameterType="com.rongdu.cashloan.cl.domain.SjAccWithCheck">
     insert into sj_acc_withcheck
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -75,6 +77,26 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <update id="update" parameterType="com.rongdu.cashloan.cl.domain.SjAccWithCheck">
+    update sj_acc_withcheck
+    <set>
+      <if test="count_borrower != null">
+        count_borrower = count_borrower + #{count_borrower},
+      </if>
+      <if test="unit_price != null">
+        unit_price = #{unit_price,jdbcType=DECIMAL},
+      </if>
+      <if test="amt != null">
+        amt = amt + #{amt,jdbcType=DECIMAL},
+      </if>
+      <if test="update_date != null">
+        update_date = #{update_date},
+      </if>
+    </set>
+    where user_id = #{user_id} AND date = CURRENT_DATE()
+  </update>
+
   <update id="updateByPrimaryKey" parameterType="com.rongdu.cashloan.cl.domain.SjAccWithCheck">
     update sj_acc_withcheck
     set date = #{date,jdbcType=DATE},
@@ -104,5 +126,10 @@
     <if test="eDate != null">
       and date_format(date, '%Y-%m-%d') &lt;= #{eDate}
     </if>
+  </select>
+  <select id="queryTodayData" parameterType="java.util.Map" resultType="integer">
+    select COUNT(id)
+    from sj_acc_withcheck
+    where user_id = #{userId,jdbcType=BIGINT} AND date = CURRENT_DATE()
   </select>
 </mapper>

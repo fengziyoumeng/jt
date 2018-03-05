@@ -3,6 +3,7 @@ package com.rongdu.cashloan.cl.mapper;
 import com.rongdu.cashloan.cl.domain.SjAccWithCheck;
 import com.rongdu.cashloan.core.common.mapper.RDBatisDao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,4 +48,8 @@ public interface SjAccWithCheckMapper {
     int insertBatch(List<SjAccWithCheck> sjAccWithCheckList);
 
     List<SjAccWithCheck> listSjAccWithCheckInfos(Map<String,Object> map);
+
+    Integer queryTodayData(HashMap<Object, Object> params);
+
+    int update(SjAccWithCheck sjAccWithCheck);
 }

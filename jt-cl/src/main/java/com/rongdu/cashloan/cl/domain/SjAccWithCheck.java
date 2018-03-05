@@ -45,6 +45,8 @@ public class SjAccWithCheck implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
+
+
     /**
      * 扣款日期
      * @return date 扣款日期
