@@ -22,16 +22,14 @@ var List = React.createClass({
     },
     componentWillMount () {
         console.log("willMount");
-
     },
     componentDidMount () {
-        console.log("didMount");
         this.fetch();
     },
     componentWillReceiveProps (nextProps) {
         console.log("WillReceiveProps");
     },
-   /* shouldComponentUpdate (nextProps,nextState) {
+    /*shouldComponentUpdate (nextProps,nextState) {
         console.log("shouldComponentUpdate");
     },*/
     componentWillUpdate (nextProps,nextState) {

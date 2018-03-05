@@ -1,6 +1,5 @@
 import React from 'react'
 import {Dropdown, Button,Icon, Menu, Modal, Table} from 'antd';
-import AddFlowInfo from './AddFlowInfo'
 
 var confirm = Modal.confirm;
 var userData;
@@ -34,24 +33,6 @@ export default React.createClass({
         });
         var pagination = this.state.pagination;
         this.fetch();
-    },
-    //新增跟修改弹窗
-    showModal(title, record, canEdit) {
-        var record = record;
-        if (title == '修改') {
-            var record = record;
-            record.ptag = record.ptag.split(',');
-            record.pprocess = record.pprocess.split(',');
-            this.refs.AddFlowInfo.setFieldsValue(record);
-        } else if (title == '新增') {
-            record = null
-        }
-        this.setState({
-            canEdit: canEdit,
-            visible: true,
-            title: title,
-            record: record
-        });
     },
     //打开分配弹窗
     showAssignModal(title, record) {
@@ -171,7 +152,15 @@ export default React.createClass({
             dataIndex: "zhimaScore"
         }, {
             title: '日期',
-            dataIndex: "addTime"
+            dataIndex: "addTime",
+            render(value){
+                if(value){
+                    var time = value.substring(0,10);
+                    return time;
+                }else{
+                    return "";
+                }
+            }
         }, {
             title: '扣款',
             dataIndex: "price"  ,
@@ -214,12 +203,6 @@ export default React.createClass({
                        pagination={this.state.pagination}
                        loading={this.state.loading}
                        onChange={this.handleTableChange}  />
-                <AddFlowInfo ref="AddFlowInfo"
-                             visible={state.visible}
-                             title={state.title}
-                             hideModal={me.hideModal}
-                             record={state.record}
-                             canEdit={state.canEdit}/>
             </div>
         );
     }

@@ -68,6 +68,13 @@ public class MerchantBorrowerServiceImpl extends BaseServiceImpl<UserData, Long>
 			}
 			PageHelper.startPage((int)params.get("current"), (int)params.get("pageSize"));
 			userData = merchantBorrowerMapper.getUserDataList(params);
+			for (UserData userDatum : userData) {
+				String address = userDatum.getProvinceAddress();
+				if(StringUtil.isNotBlank(address)){
+					String province = address.split(" ")[0];
+					userDatum.setProvinceAddress(province);
+				}
+			}
 		}catch (Exception e){
 			logger.info("查询失败",e);
 		}

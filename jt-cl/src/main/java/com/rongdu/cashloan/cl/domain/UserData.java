@@ -10,7 +10,7 @@ public class UserData {
     private String cardId;
     private Integer cardType;
     private String realName;
-    private Integer sex;
+    private String sex;
     private Integer age;
     private String qq;
     private String weixin;
@@ -97,11 +97,11 @@ public class UserData {
         this.realName = realName;
     }
 
-    public Integer getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(Integer sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 

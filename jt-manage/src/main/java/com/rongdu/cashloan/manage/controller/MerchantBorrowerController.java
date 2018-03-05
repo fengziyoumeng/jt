@@ -34,7 +34,12 @@ public class MerchantBorrowerController extends BaseController {
    @Resource
    private MerchantBorrowerService merchantBorrowerService;
 
-
+   /**
+    * 获取当前商户所拥有的数据
+    * @param searchParams
+    * @param current
+    * @param pageSize
+    */
    @RequestMapping("/act/get/userdata/list.htm")
    public void getCondition(@RequestParam(value="searchParams",required=false) String searchParams,
                             @RequestParam(value = "current") int current,

@@ -17,7 +17,7 @@
         <result column="card_id" property="cardId" jdbcType="VARCHAR" />
         <result column="card_type" property="cardType" jdbcType="INTEGER" />
         <result column="real_name" property="realName" jdbcType="VARCHAR" />
-        <result column="sex" property="sex" jdbcType="INTEGER" />
+        <result column="sex" property="sex" jdbcType="VARCHAR" />
         <result column="age" property="age" jdbcType="INTEGER" />
         <result column="qq" property="qq" jdbcType="VARCHAR" />
         <result column="weixin" property="weixin" jdbcType="VARCHAR" />
@@ -140,11 +140,11 @@
     <select id="getUserDataList" resultMap="userDataResultMap" parameterType="java.util.HashMap">
         select
             cb.user_id AS user_id,cb.borrower_id AS borrower_id,cb.card_id AS card_id,cb.card_type AS card_type,
-            cb.real_name AS real_name,cb.sex AS sex,cb.age AS age,cb.qq AS qq,cb.weixin AS weixin,
-            cb.province_address AS province_address,cb.city_address AS city_address,cb.auth_status AS auth_status,
+            cb.real_name AS real_name,cb.age AS age,cb.qq AS qq,cb.weixin AS weixin,
+            cb.address AS province_address,cb.city_address AS city_address,cb.auth_status AS auth_status,
             cb.zhima_status AS zhima_status,cb.jingdong_status AS jingdong_status,cb.operator_status AS operator_status,
             cb.is_auth_pay AS is_auth_pay,
-            cu.zhima_score AS zhima_score,cu.auth_mobile AS auth_mobile,
+            cu.zhima_score AS zhima_score,cu.auth_mobile AS auth_mobile,cu.sex AS sex,
             smb.price AS price,smb.is_detail AS is_detail,smb.audit AS audit,smb.add_time AS add_time,
             smb.id AS id
         from crm_user cu

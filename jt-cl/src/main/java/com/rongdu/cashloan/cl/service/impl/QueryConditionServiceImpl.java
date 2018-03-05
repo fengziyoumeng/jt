@@ -104,6 +104,34 @@ public class QueryConditionServiceImpl extends BaseServiceImpl<QueryCondition, L
 	}
 
 	public void recommend(Map<String,Object> condition,Long userId) throws ServiceException {
+		//从数据字典获取当前数据单价
+		SysDictDetail detail = sysDictDetailService.findDetail("DATA_PRICE", "USER_DATA_PRICE");
+
+		List<MerchantBorrower> fetchUserList = getFetchDataList(userId, condition);
+		//把处理好的数据插入到关系表
+		for (MerchantBorrower fetchuser : fetchUserList) {
+			fetchuser.setAddTime(new Date());
+			fetchuser.setMerchantId(userId);
+			fetchuser.setPrice(new BigDecimal(detail.getItemValue()));
+			fetchuser.setAudit(0);
+		}
+		merchantBorrowerMapper.batchInsert(fetchUserList);
+
+
+		BigDecimal unitPrice = new BigDecimal(detail.getItemValue());
+		//花费的总额
+		BigDecimal amount = unitPrice.multiply(new BigDecimal(fetchUserList.size()));
+		//保存当天统计数据
+		statistical(userId,amount,unitPrice,fetchUserList.size());
+        //对账户进行扣款操作
+		checkOut(userId,amount);
+        //添加一条账户流水
+		addAccountRecord(userId,amount);
+	}
+
+
+
+	public List<MerchantBorrower> getFetchDataList(Long userId,Map<String,Object> condition){
 		//查询出当前用户拥有哪些用户的数据
 		List<MerchantBorrower> hasUserDataList = merchantBorrowerMapper.queryUserById(userId);
 
@@ -132,25 +160,14 @@ public class QueryConditionServiceImpl extends BaseServiceImpl<QueryCondition, L
 			throw new RuntimeException("抱歉，没有找到符合当前条件的数据，请重新更改条件后查询！");
 		}
 
-		//从数据字典获取当前数据单价
-		SysDictDetail detail = sysDictDetailService.findDetail("DATA_PRICE", "USER_DATA_PRICE");
+		return fetchUserList;
+	}
 
-		//把处理好的数据插入到关系表
-
-		for (MerchantBorrower fetchuser : fetchUserList) {
-			fetchuser.setAddTime(new Date());
-			fetchuser.setMerchantId(userId);
-			fetchuser.setPrice(new BigDecimal(detail.getItemValue()));
-			fetchuser.setAudit(0);
-		}
-		merchantBorrowerMapper.batchInsert(fetchUserList);
-		//给账单插入对应数据
-		BigDecimal unitPrice = new BigDecimal(detail.getItemValue());
-		BigDecimal count = new BigDecimal(fetchUserList.size());
-		BigDecimal amount = unitPrice.multiply(count);
+	//保存当天的统计数据
+	public void statistical(Long userId,BigDecimal amount,BigDecimal unitPrice,Integer countBorrower){
 		SjAccWithCheck sjAccWithCheck = new SjAccWithCheck();
 		sjAccWithCheck.setUser_id(userId);
-		sjAccWithCheck.setCount_borrower(Long.valueOf(fetchUserList.size()));
+		sjAccWithCheck.setCount_borrower(Long.valueOf(countBorrower));
 		sjAccWithCheck.setDate(new Date());
 		sjAccWithCheck.setUnit_price(unitPrice);
 		sjAccWithCheck.setAmt(amount);
@@ -164,23 +181,31 @@ public class QueryConditionServiceImpl extends BaseServiceImpl<QueryCondition, L
 		}else{
 			sjAccWithCheckMapper.insert(sjAccWithCheck);
 		}
+	}
 
-        //对账户进行扣款操作
-        AccountInfo accountInfo = new AccountInfo();
+	//结账扣款
+	public void checkOut(Long userId,BigDecimal amount){
+		AccountInfo accountInfo = new AccountInfo();
 		//balance 在这里设置的是当前花费的金额,不是余额,用于在sql中减去当前花费
 		accountInfo.setBalance(amount);
 		accountInfo.setUpdate_time(new Date());
 		accountInfo.setUser_id(userId);
-        accountInfoMapper.updateByUserId(accountInfo);
-        //添加一条账户流水
-        AccountDetailInfo accountDetailInfo = new AccountDetailInfo();
-        accountDetailInfo.setAmt(amount);
-        accountDetailInfo.setAmt_type(2);
-        accountDetailInfo.setCreate_time(new Date());
-        accountDetailInfo.setUpdate_time(new Date());
-        accountDetailInfo.setHand_person("系统");
-        accountDetailInfo.setUser_id(userId);
-        accountDetailInfo.setRemark("添加用户后扣款");
-        accountDetailInfoMapper.insert(accountDetailInfo);
+		accountInfoMapper.updateByUserId(accountInfo);
 	}
+
+	//添加账户流水
+	public void addAccountRecord(Long userId,BigDecimal amount){
+		AccountDetailInfo accountDetailInfo = new AccountDetailInfo();
+		accountDetailInfo.setAmt(amount);
+		accountDetailInfo.setAmt_type(2);
+		accountDetailInfo.setCreate_time(new Date());
+		accountDetailInfo.setUpdate_time(new Date());
+		accountDetailInfo.setHand_person("系统");
+		accountDetailInfo.setUser_id(userId);
+		accountDetailInfo.setRemark("添加用户后扣款");
+		accountDetailInfoMapper.insert(accountDetailInfo);
+	}
+
+
+
 }
