@@ -7,25 +7,8 @@ const Option = Select.Option;
 const objectAssign = require('object-assign');
 var tagList = [];
 var sortList = [];
-Utils.ajaxData({
-    url: '/act/flowControl/getMutilCheckBox.htm',
-    method: 'get',
-    type: 'json',
-    data: {
-        "typeCode": "SJ_CHARGE_TYPE"
-    },
-    callback: (result) => {
-        sortList = result.data;
-    }
-});
 
-Utils.ajaxData({
-    url: '/modules/manage/system/usr/list.htm',
-    method: 'get',
-    callback: (result) => {
-        tagList = result.data;
-    }
-});
+
 var List = React.createClass({
 
     getInitialState() {
@@ -33,6 +16,8 @@ var List = React.createClass({
             selectedRowKeys: [], // 这里配置默认勾选列
             loading: false,
             data: [],
+            tagList:[],
+            sortList:[],
             formData: {},
             pagination: {},
             canEdit: true,
@@ -42,27 +27,38 @@ var List = React.createClass({
         };
     },
     componentWillMount () {
+        Utils.ajaxData({
+            url: '/modules/manage/system/usr/list.htm',
+            method: 'get',
+            callback: (result) => {
+                this.setState({
+                    tagList : result.data
+                });
+            }
+        });
+
+        Utils.ajaxData({
+            url: '/act/flowControl/getMutilCheckBox.htm',
+            method: 'get',
+            type: 'json',
+            data: {
+                "typeCode": "SJ_CHARGE_TYPE"
+            },
+            callback: (result) => {
+                this.setState({
+                    sortList : result.data
+                });
+
+            }
+        });
+
+
         console.log("willMount");
 
     },
     componentDidMount () {
         console.log("didMount");
         this.fetch();
-    },
-    componentWillReceiveProps (nextProps) {
-        console.log("WillReceiveProps");
-    },
-   /* shouldComponentUpdate (nextProps,nextState) {
-        console.log("shouldComponentUpdate");
-    },*/
-    componentWillUpdate (nextProps,nextState) {
-        console.log("WillUpdate");
-    },
-    componentDidUpdate (prevProps,prevState) {
-        console.log("DidUpdate");
-    },
-    componentWillUnmount () {
-        console.log("WillUnmount");
     },
 
     fetch(params = {
@@ -75,12 +71,12 @@ var List = React.createClass({
     },
 
     getTagList() {
-        return tagList.map((item, index) => {
+        return this.state.tagList.map((item, index) => {
             return <Option key={item.id}>{item.name}</Option>
         })
     },
     getSortList() {
-        return sortList.map((item, index) => {
+        return this.state.sortList.map((item, index) => {
             return <Option key={item.itemCode}>{item.itemValue}</Option>
         })
     },
@@ -125,6 +121,7 @@ var List = React.createClass({
         })
     },
     render() {
+        console.log("render渲染");
         const {
             getFieldProps
         } = this.props.form;
