@@ -201,11 +201,11 @@ export default React.createClass({
         var state = this.state;
         return (
             <div className="block-panel">
-                <div className="actionBtns" style={{ marginBottom: 16 }}>
-                    <button className="ant-btn" onClick={this.showModal.bind(this, '充值', null, true) }>
-                        充值
-                    </button>
-                </div>
+                {/*<div className="actionBtns" style={{ marginBottom: 16 }}>*/}
+                    {/*<button className="ant-btn" onClick={this.showModal.bind(this, '充值', null, true) }>*/}
+                        {/*充值*/}
+                    {/*</button>*/}
+                {/*</div>*/}
                 <Table columns={columns} rowKey={this.rowKey}
                        onRowClick={this.onRowClick}
                        dataSource={this.state.data}
