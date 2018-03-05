@@ -111,4 +111,13 @@
     from sj_account
     where user_id = #{userId,jdbcType=BIGINT}
   </select>
+
+  <update id="updateAccountInfo" parameterType="com.rongdu.cashloan.cl.domain.AccountInfo">
+    update sj_account
+    set user_id = #{user_id,jdbcType=BIGINT},
+    balance = balance + #{balance,jdbcType=DECIMAL},
+    create_time = #{create_time,jdbcType=TIMESTAMP},
+    update_time = #{update_time,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
 </mapper>

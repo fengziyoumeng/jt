@@ -25,4 +25,10 @@ public interface AccountService {
      * @throws Exception
      */
     Map<String,Object> getAccInfo(Map<String, Object> params) throws Exception;
+
+    void saveOrUpdate(boolean flag,AccountInfo accountInfo) throws Exception;
+
+    Long getAccount(Map<String, Object> params) throws Exception;;
+
+    void detailInsert(AccountDetailInfo accountDetailInfo) throws Exception;;
 }

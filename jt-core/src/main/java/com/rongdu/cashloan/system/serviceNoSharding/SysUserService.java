@@ -69,7 +69,9 @@ public interface SysUserService {
      * @return
      */
 	Page<Map<String, Object>> getUserPageList(int currentPage,int pageSize,Map<String, Object> mapdata) throws ServiceException;
-    
+
+	List<Map<String, Object>> getUsrPageList(Map<String, Object> mapdata) throws ServiceException;
+
     /**
      * 获取用户总记录数
      * @return

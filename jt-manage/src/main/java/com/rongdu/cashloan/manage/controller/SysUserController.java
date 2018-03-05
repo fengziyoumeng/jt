@@ -264,6 +264,24 @@ public class SysUserController extends BaseController {
 		reposedata.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
 		ServletUtils.writeToResponse(response, reposedata);
 	}
+
+	/**
+	 * 获取用户列表
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping("/modules/manage/system/usr/list.htm")
+	public void getSysUsrList(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> reposedata = new HashMap<String, Object>();
+		data.put("status", 0);
+		List<Map<String, Object>> list = sysUserService.getUsrPageList(data);
+		reposedata.put(Constant.RESPONSE_DATA, list);
+		reposedata.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		reposedata.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+		ServletUtils.writeToResponse(response, reposedata);
+	}
 	
 	/**
 	 * 获取头部信息 可以js缓存优化 后期处理

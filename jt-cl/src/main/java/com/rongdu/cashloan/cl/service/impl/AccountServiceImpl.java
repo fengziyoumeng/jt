@@ -52,4 +52,29 @@ public class AccountServiceImpl implements AccountService {
         resultMap.put("count",count);
         return resultMap;
     }
+
+    @Override
+    public void saveOrUpdate(boolean flag,AccountInfo accountInfo) throws Exception {
+        if(!flag){ //insert
+            accountInfoMapper.insert(accountInfo);
+        }else{ //update
+            accountInfoMapper.updateAccountInfo(accountInfo);
+        }
+    }
+
+    @Override
+    public Long getAccount(Map<String, Object> params) throws Exception {
+        AccountInfo accountInfo = accountInfoMapper.getAccountInfo(params);
+        if(accountInfo==null){
+            return null;
+        }else{
+            return accountInfo.getId();
+        }
+    }
+
+    @Override
+    public void detailInsert(AccountDetailInfo accountDetailInfo) throws Exception {
+        accountDetailInfoMapper.insert(accountDetailInfo);
+    }
+
 }
