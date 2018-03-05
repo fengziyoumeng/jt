@@ -7,7 +7,25 @@ const Option = Select.Option;
 const objectAssign = require('object-assign');
 var tagList = [];
 var sortList = [];
+Utils.ajaxData({
+    url: '/act/flowControl/getMutilCheckBox.htm',
+    method: 'get',
+    type: 'json',
+    data: {
+        "typeCode": "SJ_CHARGE_TYPE"
+    },
+    callback: (result) => {
+        sortList = result.data;
+    }
+});
 
+Utils.ajaxData({
+    url: '/modules/manage/system/usr/list.htm',
+    method: 'get',
+    callback: (result) => {
+        tagList = result.data;
+    }
+});
 var List = React.createClass({
 
     getInitialState() {
@@ -93,10 +111,6 @@ var List = React.createClass({
                 callback: (result) => {
                     if (result.code == 200) {
                         Modal.success({
-                            title: result.msg,
-                            onOk: () => {
-                                props.hideModal()
-                            }
                         });
                         this.setState({
                             imageUrl: ''
@@ -185,7 +199,6 @@ var List = React.createClass({
                             </Col>
                         </Row>
                         <Row {...formItemLay}>
-                            <Button  type="primary" htmlType="submit" onClick={this.handleCancel}>返 回</Button>
                             <Button  type="primary" htmlType="submit"  onClick={this.handleOk}>
                                 提 交
                             </Button>
