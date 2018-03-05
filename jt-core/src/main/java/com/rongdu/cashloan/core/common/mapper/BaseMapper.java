@@ -1,5 +1,7 @@
 package com.rongdu.cashloan.core.common.mapper;
 
+import com.rongdu.cashloan.system.domain.AccInfo;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -61,5 +63,6 @@ public interface BaseMapper<T, ID extends Serializable> {
 	 * @return 结果集
 	 */
 	List<T> listSelective(Map<String, Object> paramMap);
-	
+
+	int insertAcc(AccInfo accInfo);
 }

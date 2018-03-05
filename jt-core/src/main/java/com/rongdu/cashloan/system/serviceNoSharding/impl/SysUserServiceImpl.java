@@ -1,11 +1,14 @@
 package com.rongdu.cashloan.system.serviceNoSharding.impl;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.rongdu.cashloan.system.domain.AccInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,6 +162,12 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implement
 				sysUserRole.setUserId(sysUser.getId());
 				sysUserRoleMapper.save(sysUserRole);
 			}
+			AccInfo accInfo = new AccInfo();
+			accInfo.setBalance(new BigDecimal(0));
+			accInfo.setCreate_time(new Date());
+			accInfo.setUpdate_time(new Date());
+			accInfo.setUser_id(sysUser.getId());
+			sysUserMapper.insertAcc(accInfo);
 		} catch (Exception e) {
 			throw new ServiceException(e.getMessage(),e,Constant.FAIL_CODE_VALUE);
 		}

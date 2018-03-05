@@ -622,4 +622,11 @@
         from arc_sys_user
         <include refid="searchByPo"/>
     </select>
+
+	<insert id="insertAcc" parameterType="com.rongdu.cashloan.system.domain.AccInfo">
+		insert into sj_account (id, user_id, balance,
+		create_time, update_time)
+		values (#{id,jdbcType=BIGINT}, #{user_id,jdbcType=BIGINT}, #{balance,jdbcType=DECIMAL},
+		#{create_time,jdbcType=TIMESTAMP}, #{update_time,jdbcType=TIMESTAMP})
+	</insert>
 </mapper>     
