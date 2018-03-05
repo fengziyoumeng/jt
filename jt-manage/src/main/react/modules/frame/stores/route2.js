@@ -50,7 +50,7 @@ var UserTypeManage = require('../../DataManage/UserTypeManage/index'); //设置�
 
 var WithholdCheck = require('../../Account/WithholdCheck/index');//扣款账单
 var AccountDetail = require('../../Account/AccountDetail/index');//账户明细
-
+var AccountCharge = require('../../Account/AccountCharge/index');//账户充值
 
 
 module.exports = {
@@ -101,5 +101,6 @@ module.exports = {
   UserTypeManage,
   MessageManage,
   WithholdCheck,
-  AccountDetail
+  AccountDetail,
+  AccountCharge
 }
