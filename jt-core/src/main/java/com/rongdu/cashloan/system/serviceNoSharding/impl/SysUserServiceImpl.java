@@ -129,6 +129,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implement
 	}
 
 	@Override
+	public List<Map<String, Object>> getUsrPageList(Map<String, Object> mapdata) throws ServiceException {
+		return sysUserMapper.listUserInfo(mapdata);
+	}
+
+	@Override
 	public int getUserSum(Map<String, Object> map) throws ServiceException {
 		try {
 			return sysUserMapper.getPageCountOracle(map);

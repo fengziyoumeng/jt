@@ -1,5 +1,6 @@
 import React from 'react'
 import { Table, Modal, Icon, Button } from 'antd';
+import AddFlowInfo from './AddFlowInfo'
 const objectAssign = require('object-assign');
 var sysusername;
 export default React.createClass({
@@ -79,6 +80,18 @@ export default React.createClass({
                     }
                 });
             }
+        });
+    },
+
+    showModal(title, record, canEdit) {
+        if (title == '充值') {
+            record = null
+        }
+        this.setState({
+            canEdit: canEdit,
+            visible: true,
+            title: title,
+            record: record
         });
     },
 
@@ -189,9 +202,9 @@ export default React.createClass({
         return (
             <div className="block-panel">
                 <div className="actionBtns" style={{ marginBottom: 16 }}>
-                    {/*<button onClick={me.addModal.bind(me,'新增')} className="ant-btn">
-                新增(测试)
-              </button>*/}
+                    <button className="ant-btn" onClick={this.showModal.bind(this, '充值', null, true) }>
+                        充值
+                    </button>
                 </div>
                 <Table columns={columns} rowKey={this.rowKey}
                        onRowClick={this.onRowClick}
@@ -199,6 +212,8 @@ export default React.createClass({
                        pagination={this.state.pagination}
                        loading={this.state.loading}
                        onChange={this.handleTableChange} />
+                <AddFlowInfo ref="AddFlowInfo"  visible={state.visible}    title={state.title} hideModal={me.hideModal} record={state.record}
+                             canEdit={state.canEdit}/>
             </div>
         );
 

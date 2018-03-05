@@ -68,11 +68,11 @@ export default React.createClass({
                     <div className='blk-top'>
                         <div className='blk-top-item'>
                             <div className='blk-title'>余额（元）</div>
-                            <div className='blk-number'><a href="http://www.baidu.com">{data.balance}</a></div>
+                            <div className='blk-number'>{data.balance}</div>
                         </div>
                         <div className='blk-top-item'>
                             <div className='blk-title'>用户数（单位：个）</div>
-                            <div className='blk-number'><a href="http://www.baidu.com">{data.count}</a></div>
+                            <div className='blk-number'>{data.count}</div>
                         </div>
                     </div>
                 </div>
