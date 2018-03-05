@@ -126,6 +126,7 @@
     <if test="eDate != null">
       and date_format(date, '%Y-%m-%d') &lt;= #{eDate}
     </if>
+    order by update_date desc
   </select>
   <select id="queryTodayData" parameterType="java.util.Map" resultType="integer">
     select COUNT(id)

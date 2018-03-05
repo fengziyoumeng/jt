@@ -107,6 +107,7 @@ var List = React.createClass({
                 callback: (result) => {
                     if (result.code == 200) {
                         Modal.success({
+                            title: result.msg,
                         });
                         this.setState({
                             imageUrl: ''
