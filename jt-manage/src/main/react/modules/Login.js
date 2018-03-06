@@ -63,14 +63,14 @@ let Login = React.createClass({
             <div>
             <div className="g-loginbox">
             <div className="g-bd">
-            <div className="m-loginbg" style={{height:document.body.clientHeight}}>
-    </div>
-        <div className="m-bgwrap" style={{ cursor: "pointer" }}></div>
-        <div className="m-loginboxbg" ></div>
+            <div className="m-loginbg" style={{height:document.body.clientHeight}}></div>
+
+            <div className="m-bgwrap" style={{ cursor: "pointer" }}></div>
+            <div className="m-loginboxbg" ></div>
             <div className="m-loginbox">
             <div className="lbinner" id="J_body_bg">
             <div className="login-form">
-            <div className="login-hd">借条数据管理系统</div>
+            <div className="login-hd">小小数后台管理系统</div>
             <div className="login_input">
             <Form inline-block onSubmit={this.handleSubmit} form={this.props.form}>
     <FormItem hasFeedback>

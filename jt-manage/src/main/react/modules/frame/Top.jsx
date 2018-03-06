@@ -118,12 +118,13 @@ const Top = React.createClass({
     return (
       <div className="main-header">
         <div className="logo">
-          <span className="logo-mini"></span>
-          <span className="logo-lg"></span>
+          <span >小小数后台管理系统</span>
+          {/*<span className="logo-mini"></span>*/}
+          {/*<span className="logo-lg"></span>*/}
         </div>
         <div className="navbar navbar-static-top">
           <a href="#" className="sidebar-toggle" onClick={this.toggleMenu}>
-            <Icon type={`${ fold ? 'menu-unfold' : 'menu-fold'}`}/><span className="system-name">后台管理系统</span>
+            <Icon type={`${ fold ? 'menu-unfold' : 'menu-fold'}`}/>{/*<span className="system-name">后台管理系统</span>*/}
           </a>
           <div className="navbar-custom-menu">
             <div className="fn-right right-block">
