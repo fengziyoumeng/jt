@@ -168,6 +168,7 @@
                 and cu.auth_mobile LIKE concat('%',#{mobile},'%')
             </if>
         </where>
+        ORDER BY smb.add_time DESC
     </select>
 
     <select id="countBorrowers" resultType="java.lang.Long" parameterType="java.util.HashMap">
