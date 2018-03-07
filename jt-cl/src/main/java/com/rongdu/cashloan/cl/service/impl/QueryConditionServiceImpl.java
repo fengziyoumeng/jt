@@ -106,7 +106,7 @@ public class QueryConditionServiceImpl extends BaseServiceImpl<QueryCondition, L
 	public void recommend(Map<String,Object> condition,Long userId) throws ServiceException {
 		//从数据字典获取当前数据单价
 		SysDictDetail detail = sysDictDetailService.findDetail("DATA_PRICE", "USER_DATA_PRICE");
-
+		//获取推荐的用户,包括去重
 		List<MerchantBorrower> fetchUserList = getFetchDataList(userId, condition);
 		//把处理好的数据插入到关系表
 		for (MerchantBorrower fetchuser : fetchUserList) {
@@ -116,11 +116,13 @@ public class QueryConditionServiceImpl extends BaseServiceImpl<QueryCondition, L
 			fetchuser.setAudit(0);
 		}
 		merchantBorrowerMapper.batchInsert(fetchUserList);
-
+		//给被推荐的用户推荐数加1
+		addRecommendTimes(fetchUserList);
 
 		BigDecimal unitPrice = new BigDecimal(detail.getItemValue());
 		//花费的总额
 		BigDecimal amount = unitPrice.multiply(new BigDecimal(fetchUserList.size()));
+
 		//保存当天统计数据
 		statistical(userId,amount,unitPrice,fetchUserList.size());
         //对账户进行扣款操作
@@ -150,7 +152,6 @@ public class QueryConditionServiceImpl extends BaseServiceImpl<QueryCondition, L
 				}
 			}
 		}
-
 		//截取用户要求的数量
 		if( Integer.parseInt(condition.get("dataAmount").toString().trim()) <= fetchUserList.size()){
 			fetchUserList = fetchUserList.subList(0, Integer.parseInt(condition.get("dataAmount").toString().trim()));
@@ -162,7 +163,10 @@ public class QueryConditionServiceImpl extends BaseServiceImpl<QueryCondition, L
 
 		return fetchUserList;
 	}
-
+	//给被推荐的用户的推荐数加1
+	public void addRecommendTimes(List<MerchantBorrower> fetchUserList){
+		queryConditionMapper.updateRecommendTimes(fetchUserList);
+	}
 	//保存当天的统计数据
 	public void statistical(Long userId,BigDecimal amount,BigDecimal unitPrice,Integer countBorrower){
 		SjAccWithCheck sjAccWithCheck = new SjAccWithCheck();

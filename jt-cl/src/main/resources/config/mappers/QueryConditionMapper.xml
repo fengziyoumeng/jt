@@ -71,6 +71,16 @@
     </update>
 
 
+    <update id="updateRecommendTimes" parameterType="list">
+        update crm_user
+            SET recommend_num = recommend_num +1
+        WHERE user_id IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item.borrowerId}
+        </foreach>
+    </update>
+
+
     <update id="updateSelective"  parameterType="java.util.HashMap">
         update sj_query_condition
           <set>

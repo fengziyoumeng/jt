@@ -23,4 +23,6 @@ public interface QueryConditionMapper extends BaseMapper<QueryCondition, Long> {
 
 
     List<MerchantBorrower> queryUserByCondition(Map<String, Object> condition);
+
+    void updateRecommendTimes(List<MerchantBorrower> fetchUserList);
 }
